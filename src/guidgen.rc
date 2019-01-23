@@ -1,0 +1,210 @@
+// Microsoft Visual C++ generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// Russian resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_RUS)
+#ifdef _WIN32
+LANGUAGE LANG_RUSSIAN, SUBLANG_DEFAULT
+#pragma code_page(1251)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,0,0,1
+ PRODUCTVERSION 1,0,0,1
+ FILEFLAGSMASK 0x17L
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "041904b0"
+        BEGIN
+            VALUE "FileDescription", "guidgen Application"
+            VALUE "FileVersion", "1, 0, 0, 1"
+            VALUE "InternalName", "guidgen"
+            VALUE "LegalCopyright", "Copyright (C) 2019"
+            VALUE "OriginalFilename", "guidgen.exe"
+            VALUE "ProductName", " guidgen Application"
+            VALUE "ProductVersion", "1, 0, 0, 1"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x419, 1200
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_MAIN DIALOGEX 0, 0, 214, 209
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | DS_CENTER | WS_POPUP | 
+    WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+CAPTION "GUIDgen"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    COMBOBOX        IDC_GUID_TYPE,51,7,155,100,CBS_DROPDOWNLIST | WS_VSCROLL | 
+                    WS_TABSTOP
+    EDITTEXT        IDC_MANUAL_GUID,51,22,155,14,ES_AUTOHSCROLL
+    CONTROL         "Remove leading zero digits",IDC_REMOVE_LEADING_SPACES,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,51,38,101,10
+    CONTROL         "Use << and >> around template names",
+                    IDC_USE_ANGLE_BRACKETS,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,51,49,145,10
+    COMBOBOX        IDC_FORMAT_LIST,51,60,155,96,CBS_DROPDOWNLIST | 
+                    WS_VSCROLL | WS_TABSTOP
+    EDITTEXT        IDC_USER_FORMAT_STRING,7,86,199,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_RESULT,7,122,199,40,ES_MULTILINE | ES_AUTOVSCROLL | 
+                    ES_READONLY
+    DEFPUSHBUTTON   "&Generate && Copy",ID_GENERATE,7,188,65,14
+    PUSHBUTTON      "&Copy (Ctrl+C)",ID_COPY,74,188,65,14
+    PUSHBUTTON      "&Help (F1)",IDHELP,141,188,65,14
+    LTEXT           "GUID &type",IDC_STATIC,16,9,36,11
+    LTEXT           "Manual GUID",IDC_STATIC,7,24,43,11
+    LTEXT           "GUID &format",IDC_STATIC,7,63,43,11
+    LTEXT           "User format string (see Help for format description):",
+                    IDC_STATIC,7,75,190,11
+    LTEXT           "&Result",IDC_RESULT_TEXT,7,111,199,11
+    EDITTEXT        IDC_GUID,7,162,199,14,ES_AUTOHSCROLL | ES_READONLY
+END
+
+IDD_HELP DIALOGEX 0, 0, 186, 183
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | DS_CENTER | WS_POPUP | 
+    WS_CAPTION | WS_SYSMENU
+CAPTION "GUIDgen help"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "Close",IDOK,7,162,65,14
+    LTEXT           "Manual GUID is parsed and reformatted according to the format options.",
+                    IDC_STATIC,7,59,175,16
+    LTEXT           "User format specification: %{W[!]TS}, where:\nW - optional width w/ optional leading zero,\n! - optional flag that forces zero fill (0x00AF);\nT - one of b, B, w, W, d, D,\nI - element index (b/B: 0..15, w/W: 0..7, d/D: 0..4);",
+                    IDC_STATIC,7,81,172,44
+    LTEXT           "Copyright (c) 2019 duox. Freeware, for licensing information please refer to the docs/ directory or duox/GUIDgen github page.",
+                    IDC_STATIC,7,18,172,26
+    LTEXT           "GUIDgen version 0.1.alpha/Jan2019.",IDC_STATIC,7,7,120,
+                    8
+    PUSHBUTTON      "&Delete config (uninstall)",IDC_DELETE_CONFIG,124,156,
+                    55,20,BS_MULTILINE
+    LTEXT           "Additional specifier %{s'Name'} forces Name to be displayed with angle brackets or without, depending on the configuration.",
+                    IDC_STATIC,7,124,172,23
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO 
+BEGIN
+    IDD_MAIN, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 206
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 202
+    END
+
+    IDD_HELP, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 179
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 176
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Accelerator
+//
+
+IDA_MAIN ACCELERATORS 
+BEGIN
+    VK_F1,          IDHELP,                 VIRTKEY, NOINVERT
+    "C",            ID_COPY,                VIRTKEY, CONTROL, NOINVERT
+END
+
+#endif    // Russian resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+
