@@ -128,7 +128,7 @@ bool user_format_guid_generator::format( const GUID & guid, const char * format,
 		if( leading_zero || !disable_leading_zero )
 		{
 			*sp ++ = '0';
-			itoa( 0 == width ? type*2 : width, sp, 10 );
+			_itoa_s( 0 == width ? type*2 : width, sp, sizeof(spec) - (sp - spec), 10 );
 			sp = spec + strlen( spec );
 		}
 
@@ -136,7 +136,7 @@ bool user_format_guid_generator::format( const GUID & guid, const char * format,
 		*sp = '\0';
 
 		char dst[128];
-		_snprintf( dst, countof(dst), spec, data );
+		_snprintf_s( dst, countof(dst), spec, data );
 		buf += dst;
 	}
 

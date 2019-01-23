@@ -9,6 +9,7 @@
 
 #include <string>
 
+#pragma warning(disable: 4481)	//: nonstandard extension used: override specifier 'abstract'
 
 #ifndef _MSC_VER_71
 # define _MSC_VER_71		1310
@@ -21,6 +22,11 @@
 #if !defined override && _MSC_VER < 1800
 # define override
 #endif // ndef !defined override && _MSC_VER < 1800
+
+#ifdef _MSC_VER_71
+# define _itoa_s( val, buf, size, radix )		_itoa( val, buf, radix )
+# define _snprintf_s							_snprintf
+#endif
 
 #undef nullptr
 #if _MSC_VER < _MSC_VER_2015

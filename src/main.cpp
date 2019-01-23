@@ -206,7 +206,7 @@ void OnInitDialog( HWND hwnd )
 	GenerateGuid( hwnd, FALSE );
 }
 
-BOOL CALLBACK MainDialogProc( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam )
+INT_PTR CALLBACK MainDialogProc( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam )
 {
 	switch( uMsg )
 	{

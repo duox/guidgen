@@ -16,8 +16,8 @@ extern Csharp_field_definition_guid_generator	g_Csharp_field_definition_guid_gen
 extern VbNet_field_definition_guid_generator	g_VbNet_field_definition_guid_generator;
 extern guid_generator * g_guid_generators[];
 
-BOOL CALLBACK MainDialogProc( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam );
-BOOL CALLBACK HelpDialogProc( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam );
+INT_PTR CALLBACK MainDialogProc( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam );
+INT_PTR CALLBACK HelpDialogProc( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam );
 
 void StoreConfig( HWND hwnd );
 void LoadConfig( HWND hwnd );

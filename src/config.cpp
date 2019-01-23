@@ -23,7 +23,7 @@ static BOOL ConfigLoaded = FALSE;	///< guards configuration data by ordering loa
  *
  * @return (LRESULT) operation status.
  */
-static LRESULT	RegQueryTypedValueA( HKEY hKey, LPSTR Name, DWORD dwType, LPVOID lpData, SIZE_T cbData, SIZE_T * lpcbData )
+static LRESULT	RegQueryTypedValueA( HKEY hKey, LPCSTR Name, DWORD dwType, LPVOID lpData, SIZE_T cbData, SIZE_T * lpcbData )
 {
 	DWORD dwThisType = dwType;
 	DWORD nRead = (DWORD) cbData;
@@ -72,9 +72,9 @@ void StoreConfig( HWND hwnd )
 	RegSetValueExA( hKey, "Format", 0, REG_DWORD, (BYTE *) &dwValue, sizeof(dwValue) );
 
 	GetDlgItemText( hwnd, IDC_MANUAL_GUID, buffer, countof(buffer) );
-	RegSetValueExA( hKey, "ManualGuid", 0, REG_SZ, (BYTE *) buffer, (DWORD) sizeof(*buffer)*strlen(buffer) );
+	RegSetValueExA( hKey, "ManualGuid", 0, REG_SZ, (BYTE *) buffer, DWORD( sizeof(*buffer)*strlen(buffer) ) );
 	GetDlgItemText( hwnd, IDC_USER_FORMAT_STRING, buffer, countof(buffer) );
-	RegSetValueExA( hKey, "FormatString", 0, REG_SZ, (BYTE *) buffer, (DWORD) sizeof(*buffer)*strlen(buffer) );
+	RegSetValueExA( hKey, "FormatString", 0, REG_SZ, (BYTE *) buffer, DWORD( sizeof(*buffer)*strlen(buffer) ) );
 
 	dwValue = BST_UNCHECKED != IsDlgButtonChecked( hwnd, IDC_REMOVE_LEADING_SPACES );
 	RegSetValueExA( hKey, "RemoveSpaces", 0, REG_DWORD, (BYTE *) &dwValue, sizeof(dwValue) );
