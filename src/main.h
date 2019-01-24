@@ -2,7 +2,7 @@
 
 #include "resource.h"
 
-#include "guid_gens.h"
+#include "guid_generator.h"
 
 extern user_format_guid_generator				g_user_format_guid_generator;
 extern IMPLEMENT_OLECREATE_guid_generator		g_IMPLEMENT_OLECREATE_guid_generator;

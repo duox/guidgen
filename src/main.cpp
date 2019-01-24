@@ -13,6 +13,8 @@ HINSTANCE	g_hInstance;	/// < application module instance
 HWND		g_hwndMain;		/// < handle to the main window
 HACCEL		g_haccMain;		/// < handle to the application accelerators
 GUID		g_Guid;			/// < currently displayed GUID
+RECT		g_InitialClientRect;	/// < initial rectnagle of the main dialog window
+RECT		g_InitialWindowRect;	/// < initial rectnagle of the main dialog window
 
 /**
  * @brief List of all generators.
@@ -60,11 +62,11 @@ int CALLBACK WinMain( IN HINSTANCE hInstance, IN HINSTANCE hPrevInstance, IN LPS
 	g_hwndMain = CreateDialog( hInstance, MAKEINTRESOURCE(IDD_MAIN), HWND_DESKTOP, MainDialogProc );
 	if( NULL == g_hwndMain )
 		return -1;
-	ShowWindow( g_hwndMain, nShowCmd );
 
 	g_haccMain = LoadAccelerators( hInstance, MAKEINTRESOURCE(IDA_MAIN) );
 
 	LoadConfig( g_hwndMain );
+	ShowWindow( g_hwndMain, nShowCmd );
 
 	MSG Msg;
 	int bRet;
@@ -163,6 +165,68 @@ void CopyString( HWND hwnd )
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+#define CTRL_ANCHOR_TOP		0x0001
+#define CTRL_ANCHOR_LEFT	0x0002
+#define CTRL_ANCHOR_BOTTOM	0x0004
+#define CTRL_ANCHOR_RIGHT	0x0008
+#define CTRL_MOVE_TOP		0x0010
+#define CTRL_MOVE_LEFT		0x0020
+struct control_info
+{
+	unsigned	m_id;
+	unsigned	m_flags;
+	RECT		m_margins;
+	SIZE		m_initial_size;
+};
+static control_info g_ctrl_list[] =
+{
+	{ IDC_GUID_TYPE,			CTRL_ANCHOR_TOP | CTRL_ANCHOR_LEFT | CTRL_ANCHOR_RIGHT },
+	{ IDC_MANUAL_GUID,			CTRL_ANCHOR_TOP | CTRL_ANCHOR_LEFT | CTRL_ANCHOR_RIGHT },
+	{ IDC_FORMAT_LIST,			CTRL_ANCHOR_TOP | CTRL_ANCHOR_LEFT | CTRL_ANCHOR_RIGHT },
+	{ IDC_USER_FORMAT_STRING,	CTRL_ANCHOR_TOP | CTRL_ANCHOR_LEFT | CTRL_ANCHOR_BOTTOM | CTRL_ANCHOR_RIGHT },
+
+	{ IDC_RESULT,				CTRL_MOVE_TOP | CTRL_ANCHOR_LEFT | CTRL_ANCHOR_BOTTOM | CTRL_ANCHOR_RIGHT },
+	{ IDC_RESULT_TEXT,			CTRL_MOVE_TOP | CTRL_ANCHOR_LEFT | CTRL_ANCHOR_BOTTOM | CTRL_ANCHOR_RIGHT },
+	{ IDC_GUID,					CTRL_MOVE_TOP | CTRL_ANCHOR_LEFT | CTRL_ANCHOR_BOTTOM | CTRL_ANCHOR_RIGHT },
+
+	{ ID_GENERATE,				CTRL_MOVE_TOP | CTRL_ANCHOR_LEFT | CTRL_ANCHOR_BOTTOM },
+	{ ID_COPY,					CTRL_MOVE_TOP | CTRL_ANCHOR_LEFT | CTRL_ANCHOR_BOTTOM },
+	{ IDHELP,					CTRL_MOVE_TOP | CTRL_ANCHOR_LEFT | CTRL_ANCHOR_BOTTOM },
+};
+
+void OnSize( HWND hwnd )
+{
+	RECT rc;
+	HDWP hdwp = BeginDeferWindowPos( countof(g_ctrl_list) );
+	GetClientRect( hwnd, &rc );
+	for( size_t i = 0; i < countof(g_ctrl_list); ++ i )
+	{
+		HWND hwndChild = GetDlgItem( hwnd, g_ctrl_list[i].m_id );
+		RECT rcChild;
+		GetWindowRect( hwndChild, &rcChild );
+		MapWindowPoints( HWND_DESKTOP, hwnd, (LPPOINT)&rcChild, sizeof(rcChild)/sizeof(POINT) );
+
+		if( g_ctrl_list[i].m_flags & CTRL_ANCHOR_TOP )
+			rcChild.top		= rc.top	+ g_ctrl_list[i].m_margins.top;
+		if( g_ctrl_list[i].m_flags & CTRL_ANCHOR_LEFT )
+			rcChild.left	= rc.left	+ g_ctrl_list[i].m_margins.left;
+		if( g_ctrl_list[i].m_flags & CTRL_ANCHOR_BOTTOM )
+			rcChild.bottom	= rc.bottom	- g_ctrl_list[i].m_margins.bottom;
+		if( g_ctrl_list[i].m_flags & CTRL_ANCHOR_RIGHT )
+			rcChild.right	= rc.right	- g_ctrl_list[i].m_margins.right;
+
+		if( g_ctrl_list[i].m_flags & CTRL_MOVE_LEFT )
+			rcChild.left	= rcChild.right		- g_ctrl_list[i].m_initial_size.cx;
+		if( g_ctrl_list[i].m_flags & CTRL_MOVE_TOP )
+			rcChild.top		= rcChild.bottom	- g_ctrl_list[i].m_initial_size.cy;
+
+		DeferWindowPos( hdwp, hwndChild, NULL, rcChild.left, rcChild.top, rcChild.right - rcChild.left, rcChild.bottom - rcChild.top, SWP_NOZORDER|SWP_NOREDRAW );
+	}
+	InvalidateRect( hwnd, NULL, FALSE );
+	EndDeferWindowPos( hdwp );
+	StoreConfig( hwnd );
+}
+
 void OnUpdateGuidType( HWND hwnd, HWND hwndChild )
 {
 	EnableWindow(
@@ -182,6 +246,33 @@ void OnUpdateGuidFormat( HWND hwnd, HWND hwndChild )
 void OnInitDialog( HWND hwnd )
 {
 	HWND hwndChild;
+
+	// Set icon
+	HICON hico;
+	hico = LoadIcon( g_hInstance, MAKEINTRESOURCE(IDI_MAIN_BIG) );
+	SendMessage( hwnd, WM_SETICON, ICON_BIG, LPARAM(hico) );
+	DestroyIcon( hico );
+	hico = LoadIcon( g_hInstance, MAKEINTRESOURCE(IDI_MAIN_SMALL) );
+	SendMessage( hwnd, WM_SETICON, ICON_SMALL, LPARAM(hico) );
+	DestroyIcon( hico );
+
+	// Initialize list of auto-resizeable controls
+	GetClientRect( hwnd, &g_InitialClientRect );
+	GetWindowRect( hwnd, &g_InitialWindowRect );
+	for( size_t i = 0; i < countof(g_ctrl_list); ++ i )
+	{
+		RECT rcChild;
+		GetWindowRect( GetDlgItem( hwnd, g_ctrl_list[i].m_id ), &rcChild );
+		MapWindowPoints( HWND_DESKTOP, hwnd, (LPPOINT)&rcChild, sizeof(rcChild)/sizeof(POINT) );
+
+		g_ctrl_list[i].m_initial_size.cx = rcChild.right  - rcChild.left;
+		g_ctrl_list[i].m_initial_size.cy = rcChild.bottom - rcChild.top;
+
+		g_ctrl_list[i].m_margins.left	= rcChild.left;
+		g_ctrl_list[i].m_margins.top	= rcChild.top;
+		g_ctrl_list[i].m_margins.right	= g_InitialClientRect.right	 - rcChild.right;
+		g_ctrl_list[i].m_margins.bottom	= g_InitialClientRect.bottom - rcChild.bottom;
+	}
 
 	// Initialize type list
 	hwndChild = GetDlgItem( hwnd, IDC_GUID_TYPE );
@@ -219,6 +310,14 @@ INT_PTR CALLBACK MainDialogProc( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPa
 		return FALSE;
 	case WM_CLOSE:
 		DestroyWindow( hwnd );
+		break;
+	case WM_GETMINMAXINFO:{
+		MINMAXINFO * mmi = (MINMAXINFO *) lParam;
+		mmi->ptMinTrackSize.x = g_InitialWindowRect.right - g_InitialWindowRect.left;
+		mmi->ptMinTrackSize.y = g_InitialWindowRect.bottom - g_InitialWindowRect.top;
+		}break;
+	case WM_SIZE:
+		OnSize( hwnd );
 		break;
 	case WM_COMMAND:
 		switch( LOWORD(wParam) )

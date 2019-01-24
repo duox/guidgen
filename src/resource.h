@@ -6,6 +6,9 @@
 #define IDD_MAIN                        101
 #define IDD_HELP                        102
 #define IDA_MAIN                        103
+#define IDI_MAIN_BIG                    104
+#define IDI_MAIN_BIG1                   105
+#define IDI_MAIN_SMALL                  105
 #define ID_GENERATE                     1001
 #define ID_COPY                         1002
 #define IDC_GUID_TYPE                   1006
@@ -23,7 +26,7 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        104
+#define _APS_NEXT_RESOURCE_VALUE        105
 #define _APS_NEXT_COMMAND_VALUE         40005
 #define _APS_NEXT_CONTROL_VALUE         1022
 #define _APS_NEXT_SYMED_VALUE           101

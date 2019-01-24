@@ -81,6 +81,15 @@ void StoreConfig( HWND hwnd )
 	dwValue = BST_UNCHECKED != IsDlgButtonChecked( hwnd, IDC_USE_ANGLE_BRACKETS );
 	RegSetValueExA( hKey, "AngleBrackets", 0, REG_DWORD, (BYTE *) &dwValue, sizeof(dwValue) );
 
+	RECT rcWindow;
+	GetWindowRect( hwnd, &rcWindow );
+	RegSetValueExA( hKey, "Window.X", 0, REG_DWORD, (BYTE *) &rcWindow.left, sizeof(rcWindow.left) );
+	RegSetValueExA( hKey, "Window.Y", 0, REG_DWORD, (BYTE *) &rcWindow.top, sizeof(rcWindow.top) );
+	dwValue = rcWindow.right - rcWindow.left;
+	RegSetValueExA( hKey, "Window.Width", 0, REG_DWORD, (BYTE *) &dwValue, sizeof(dwValue) );
+	dwValue = rcWindow.bottom - rcWindow.top;
+	RegSetValueExA( hKey, "Window.Height", 0, REG_DWORD, (BYTE *) &dwValue, sizeof(dwValue) );
+
 	// Done, exit
 	RegCloseKey( hKey );
 }
@@ -98,6 +107,7 @@ void LoadConfig( HWND hwnd )
 	char ManualGuid[4096] = "";
 	char FormatString[4096] = "";
 	DWORD dwRemoveSpaces = 0, dwAngleBrackets = 0;
+	DWORD WindowX = 0, WindowY = 0, WindowWidth = 0, WindowHeight = 0;
 
 	// Open path to the registry
 	lResult = RegOpenKeyA( HKEY_CURRENT_USER, "Software\\duox\\GUIDgen", &hKey );
@@ -114,13 +124,21 @@ void LoadConfig( HWND hwnd )
 		ERROR_SUCCESS == RegQueryTypedValueA( hKey, "ManualGuid", REG_SZ, ManualGuid, sizeof(ManualGuid), NULL ) &&
 		ERROR_SUCCESS == RegQueryTypedValueA( hKey, "FormatString", REG_SZ, FormatString, sizeof(FormatString), NULL ) &&
 		ERROR_SUCCESS == RegQueryTypedValueA( hKey, "RemoveSpaces", REG_DWORD, &dwRemoveSpaces, sizeof(dwRemoveSpaces), NULL ) &&
-		ERROR_SUCCESS == RegQueryTypedValueA( hKey, "AngleBrackets", REG_DWORD, &dwAngleBrackets, sizeof(dwAngleBrackets), NULL );
-	if( bResult ||
-		dwGenType < ComboBox_GetCount( GetDlgItem( hwnd, IDC_GUID_TYPE ) ) ||
-		dwFormat < ComboBox_GetCount( GetDlgItem( hwnd, IDC_FORMAT_LIST ) )
-		)
-	{
+		ERROR_SUCCESS == RegQueryTypedValueA( hKey, "AngleBrackets", REG_DWORD, &dwAngleBrackets, sizeof(dwAngleBrackets), NULL ) &&
+
+		ERROR_SUCCESS == RegQueryTypedValueA( hKey, "Window.X", REG_DWORD, &WindowX, sizeof(WindowX), NULL ) &&
+		ERROR_SUCCESS == RegQueryTypedValueA( hKey, "Window.Y", REG_DWORD, &WindowY, sizeof(WindowY), NULL ) &&
+		ERROR_SUCCESS == RegQueryTypedValueA( hKey, "Window.Width", REG_DWORD, &WindowWidth, sizeof(WindowWidth), NULL ) &&
+		ERROR_SUCCESS == RegQueryTypedValueA( hKey, "Window.Height", REG_DWORD, &WindowHeight, sizeof(WindowHeight), NULL ) &&
+		TRUE;
+	if( bResult &&
+		dwGenType < ComboBox_GetCount( GetDlgItem( hwnd, IDC_GUID_TYPE ) ) &&
+		dwFormat < ComboBox_GetCount( GetDlgItem( hwnd, IDC_FORMAT_LIST ) ) &&
+		0 != WindowWidth && 0 != WindowHeight
+	){
 		// Modify GUI
+		MoveWindow( hwnd, WindowX, WindowY, WindowWidth, WindowHeight, TRUE );
+
 		ComboBox_SetCurSel( GetDlgItem( hwnd, IDC_GUID_TYPE ), dwGenType );
 		ComboBox_SetCurSel( GetDlgItem( hwnd, IDC_FORMAT_LIST ), dwFormat );
 		SetDlgItemText( hwnd, IDC_MANUAL_GUID, ManualGuid );

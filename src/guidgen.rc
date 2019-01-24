@@ -65,8 +65,8 @@ END
 //
 
 IDD_MAIN DIALOGEX 0, 0, 214, 209
-STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | DS_CENTER | WS_POPUP | 
-    WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+STYLE DS_SETFONT | DS_FIXEDSYS | DS_CENTER | WS_POPUP | WS_CAPTION | 
+    WS_SYSMENU | WS_THICKFRAME
 CAPTION "GUIDgen"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
@@ -81,7 +81,7 @@ BEGIN
     COMBOBOX        IDC_FORMAT_LIST,51,60,155,96,CBS_DROPDOWNLIST | 
                     WS_VSCROLL | WS_TABSTOP
     EDITTEXT        IDC_USER_FORMAT_STRING,7,86,199,23,ES_MULTILINE | 
-                    ES_AUTOHSCROLL | ES_WANTRETURN
+                    ES_AUTOVSCROLL | ES_AUTOHSCROLL | ES_WANTRETURN
     EDITTEXT        IDC_RESULT,7,122,199,40,ES_MULTILINE | ES_AUTOVSCROLL | 
                     ES_READONLY
     DEFPUSHBUTTON   "&Generate && Copy",ID_GENERATE,7,188,65,14
@@ -156,6 +156,16 @@ BEGIN
     "C",            ID_COPY,                VIRTKEY, CONTROL, NOINVERT
 END
 
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDI_MAIN_BIG            ICON                    "main_big.ico"
+IDI_MAIN_SMALL          ICON                    "main_small.ico"
 #endif    // Russian resources
 /////////////////////////////////////////////////////////////////////////////
 
