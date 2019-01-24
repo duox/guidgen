@@ -169,7 +169,10 @@ void LoadConfig( HWND hwnd )
 void DeleteConfig( HWND hwnd )
 {
 	if( IDYES == MessageBoxA( hwnd, "Delete configuration from the registry?", "Please confirm operation", MB_YESNO|MB_ICONQUESTION ) )
+	{
 		RegDeleteKey( HKEY_CURRENT_USER, "Software\\duox\\GUIDgen" );
+		RegDeleteKey( HKEY_CURRENT_USER, "Software\\duox" );	// may fail if other products are installed
+	}
 }
 
 /*END OF config.cpp*/

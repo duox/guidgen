@@ -16,6 +16,8 @@ GUID		g_Guid;			/// < currently displayed GUID
 RECT		g_InitialClientRect;	/// < initial rectnagle of the main dialog window
 RECT		g_InitialWindowRect;	/// < initial rectnagle of the main dialog window
 
+void OnUpdateGuidFormat( HWND hwnd, HWND hwndChild );
+
 /**
  * @brief List of all generators.
  */
@@ -45,6 +47,27 @@ guid_generator * g_guid_generators[] =
 };
 ///}
 
+#if 0	// TODO
+bool is_console(HANDLE h)
+{
+	if (!h) return false;
+
+	AttachConsole( ATTACH_PARENT_PROCESS );
+
+	if (FILE_TYPE_UNKNOWN == ::GetFileType(h) && ERROR_INVALID_HANDLE == GetLastError()) {
+		/* workaround cygwin brokenness */
+		h = CreateFile(_T("CONOUT$"), GENERIC_WRITE, FILE_SHARE_READ | FILE_SHARE_WRITE, NULL, OPEN_EXISTING, 0, NULL);
+		if (h) {
+			::CloseHandle(h);
+			return true;
+		}
+	}
+
+	CONSOLE_FONT_INFO cfi;
+	return ::GetCurrentConsoleFont(h, FALSE, &cfi) != 0;
+}
+#endif	// 0
+
 /**
  * @brief Application entry point.
  *
@@ -59,6 +82,20 @@ int CALLBACK WinMain( IN HINSTANCE hInstance, IN HINSTANCE hPrevInstance, IN LPS
 {
 	g_hInstance = hInstance;
 
+#if 0	// TODO
+	HANDLE hConOut = GetStdHandle( STD_OUTPUT_HANDLE );
+	if( is_console( hConOut ) )
+	{
+		DWORD dwWritten = 0;
+		const char buf[] = "\nGUIDgen\n\n\n\n";
+		WriteConsoleA( hConOut, buf, (DWORD) strlen(buf), &dwWritten, NULL );
+		FlushFileBuffers( hConOut );
+		CloseHandle( hConOut );
+		FreeConsole();
+		return 0;
+	}
+#endif // 0
+
 	g_hwndMain = CreateDialog( hInstance, MAKEINTRESOURCE(IDD_MAIN), HWND_DESKTOP, MainDialogProc );
 	if( NULL == g_hwndMain )
 		return -1;
@@ -66,6 +103,7 @@ int CALLBACK WinMain( IN HINSTANCE hInstance, IN HINSTANCE hPrevInstance, IN LPS
 	g_haccMain = LoadAccelerators( hInstance, MAKEINTRESOURCE(IDA_MAIN) );
 
 	LoadConfig( g_hwndMain );
+	OnUpdateGuidFormat( g_hwndMain, GetDlgItem( g_hwndMain, IDC_FORMAT_LIST ) );
 	ShowWindow( g_hwndMain, nShowCmd );
 
 	MSG Msg;
