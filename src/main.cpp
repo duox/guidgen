@@ -224,7 +224,6 @@ void OnSize( HWND hwnd )
 	}
 	InvalidateRect( hwnd, NULL, FALSE );
 	EndDeferWindowPos( hdwp );
-	StoreConfig( hwnd );
 }
 
 void OnUpdateGuidType( HWND hwnd, HWND hwndChild )
@@ -305,6 +304,7 @@ INT_PTR CALLBACK MainDialogProc( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPa
 		OnInitDialog( hwnd );
 		break;
 	case WM_DESTROY:
+		StoreConfig( hwnd );
 		g_hwndMain = NULL;
 		PostQuitMessage( 0 );
 		return FALSE;
@@ -316,6 +316,9 @@ INT_PTR CALLBACK MainDialogProc( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPa
 		mmi->ptMinTrackSize.x = g_InitialWindowRect.right - g_InitialWindowRect.left;
 		mmi->ptMinTrackSize.y = g_InitialWindowRect.bottom - g_InitialWindowRect.top;
 		}break;
+	case WM_NCHITTEST:
+		SetDlgMsgResult( hwnd, WM_NCHITTEST, HTCAPTION );
+		break;
 	case WM_SIZE:
 		OnSize( hwnd );
 		break;

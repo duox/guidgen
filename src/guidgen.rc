@@ -27,13 +27,13 @@ LANGUAGE LANG_RUSSIAN, SUBLANG_DEFAULT
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 1,0,0,1
- PRODUCTVERSION 1,0,0,1
+ FILEVERSION 0,1,0,0
+ PRODUCTVERSION 0,1,0,0
  FILEFLAGSMASK 0x17L
 #ifdef _DEBUG
- FILEFLAGS 0x1L
+ FILEFLAGS 0x3L
 #else
- FILEFLAGS 0x0L
+ FILEFLAGS 0x2L
 #endif
  FILEOS 0x4L
  FILETYPE 0x1L
@@ -43,13 +43,13 @@ BEGIN
     BEGIN
         BLOCK "041904b0"
         BEGIN
-            VALUE "FileDescription", "guidgen Application"
-            VALUE "FileVersion", "1, 0, 0, 1"
+            VALUE "FileDescription", "GUIDgen application"
+            VALUE "FileVersion", "0, 1, 0, 0"
             VALUE "InternalName", "guidgen"
-            VALUE "LegalCopyright", "Copyright (C) 2019"
+            VALUE "LegalCopyright", "Copyright (C) 2019 Akimov Vitaly"
             VALUE "OriginalFilename", "guidgen.exe"
-            VALUE "ProductName", " guidgen Application"
-            VALUE "ProductVersion", "1, 0, 0, 1"
+            VALUE "ProductName", "GUIDgen"
+            VALUE "ProductVersion", "0, 1, 0, 0"
         END
     END
     BLOCK "VarFileInfo"
@@ -96,13 +96,13 @@ BEGIN
     EDITTEXT        IDC_GUID,7,162,199,14,ES_AUTOHSCROLL | ES_READONLY
 END
 
-IDD_HELP DIALOGEX 0, 0, 186, 183
+IDD_HELP DIALOGEX 0, 0, 186, 215
 STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | DS_CENTER | WS_POPUP | 
     WS_CAPTION | WS_SYSMENU
 CAPTION "GUIDgen help"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
-    DEFPUSHBUTTON   "Close",IDOK,7,162,65,14
+    DEFPUSHBUTTON   "Close",IDOK,7,194,65,14
     LTEXT           "Manual GUID is parsed and reformatted according to the format options.",
                     IDC_STATIC,7,59,175,16
     LTEXT           "User format specification: %{W[!]TS}, where:\nW - optional width w/ optional leading zero,\n! - optional flag that forces zero fill (0x00AF);\nT - one of b, B, w, W, d, D,\nI - element index (b/B: 0..15, w/W: 0..7, d/D: 0..4);",
@@ -111,10 +111,13 @@ BEGIN
                     IDC_STATIC,7,18,172,26
     LTEXT           "GUIDgen version 0.1.alpha/Jan2019.",IDC_STATIC,7,7,120,
                     8
-    PUSHBUTTON      "&Delete config (uninstall)",IDC_DELETE_CONFIG,124,156,
+    PUSHBUTTON      "&Delete config (uninstall)",IDC_DELETE_CONFIG,124,188,
                     55,20,BS_MULTILINE
     LTEXT           "Additional specifier %{s'Name'} forces Name to be displayed with angle brackets or without, depending on the configuration.",
                     IDC_STATIC,7,124,172,23
+    EDITTEXT        ID_HELP_DEFAULT_FORMAT,7,168,172,14,ES_AUTOHSCROLL | 
+                    ES_READONLY
+    LTEXT           "Default GUID format string:",IDC_STATIC,7,159,89,8
 END
 
 
@@ -139,7 +142,7 @@ BEGIN
         LEFTMARGIN, 7
         RIGHTMARGIN, 179
         TOPMARGIN, 7
-        BOTTOMMARGIN, 176
+        BOTTOMMARGIN, 208
     END
 END
 #endif    // APSTUDIO_INVOKED
