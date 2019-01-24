@@ -184,6 +184,12 @@
 				RelativePath="..\..\src\config.cpp">
 			</File>
 			<File
+				RelativePath="..\..\src\guid_generator.cxx">
+			</File>
+			<File
+				RelativePath="..\..\src\guid_generator.h">
+			</File>
+			<File
 				RelativePath="..\..\src\help.cpp">
 			</File>
 			<File
@@ -215,24 +221,6 @@
 			</File>
 			<File
 				RelativePath="..\..\src\pch.h">
-			</File>
-			<Filter
-				Name="generators"
-				Filter="">
-				<File
-					RelativePath="..\..\src\guid_generator.cxx">
-				</File>
-				<File
-					RelativePath="..\..\src\user_format_guid_generator.cxx">
-				</File>
-			</Filter>
-		</Filter>
-		<Filter
-			Name="headers"
-			Filter="h;hpp;hxx;hm;inl;inc;xsd"
-			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}">
-			<File
-				RelativePath="..\..\src\guid_gens.h">
 			</File>
 		</Filter>
 		<Filter

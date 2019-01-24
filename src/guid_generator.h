@@ -29,6 +29,7 @@ public:
 		unsigned	m_flags;
 	};
 	virtual bool	format( std::string & buf, context & ctx ) abstract;
+	bool	format( const GUID & guid, const char * format, unsigned flags, std::string & buf );
 };
 
 class user_format_guid_generator : public guid_generator
@@ -40,9 +41,8 @@ public:
 	}
 	virtual bool	format( std::string & buf, context & ctx ) override
 	{
-		return format( ctx.m_guid, ctx.m_format.c_str(), ctx.m_flags, buf );
+		return guid_generator::format( ctx.m_guid, ctx.m_format.c_str(), ctx.m_flags, buf );
 	}
-	static bool	format( const GUID & guid, const char * format, unsigned flags, std::string & buf );
 };
 
 class IMPLEMENT_OLECREATE_guid_generator : public guid_generator
@@ -54,7 +54,7 @@ public:
 	}
 	bool	format( std::string & buf, context & ctx ) override
 	{
-		return user_format_guid_generator::format(
+		return guid_generator::format(
 			ctx.m_guid,
 			"// {%{!D0}-%{!W2}-%{!W3}-%{!W4}-%{!B10}%{!B11}%{!B12}%{!B13}%{!B14}%{!B15}}\r\n"
 			"IMPLEMENT_OLECREATE( %{s'Class'}, %{s'Name'}, 0x%{d0}, 0x%{w2}, 0x%{w3}, 0x%{w4}, 0x%{b10}, 0x%{b11}, 0x%{b12}, 0x%{b13}, 0x%{b14}, 0x%{b15} )",
@@ -71,7 +71,7 @@ public:
 	}
 	bool	format( std::string & buf, context & ctx ) override
 	{
-		return user_format_guid_generator::format(
+		return guid_generator::format(
 			ctx.m_guid,
 			"// {%{!D0}-%{!W2}-%{!W3}-%{!W4}-%{!B10}%{!B11}%{!B12}%{!B13}%{!B14}%{!B15}}\r\n"
 			"DEFINE_GUID( %{s'Name'}, 0x%{d0}, 0x%{w2}, 0x%{w3}, 0x%{w4}, 0x%{b10}, 0x%{b11}, 0x%{b12}, 0x%{b13}, 0x%{b14}, 0x%{b15} )",
@@ -88,7 +88,7 @@ public:
 	}
 	bool	format( std::string & buf, context & ctx ) override
 	{
-		return user_format_guid_generator::format(
+		return guid_generator::format(
 			ctx.m_guid,
 			"// {%{!D0}-%{!W2}-%{!W3}-%{!W4}-%{!B10}%{!B11}%{!B12}%{!B13}%{!B14}%{!B15}}\r\n"
 			"static const struct GUID %{s'Name'} = { 0x%{d0}, 0x%{w2}, 0x%{w3}, 0x%{w4}, { 0x%{b10}, 0x%{b11}, 0x%{b12}, 0x%{b13}, 0x%{b14}, 0x%{b15} } }",
@@ -105,7 +105,7 @@ public:
 	}
 	bool	format( std::string & buf, context & ctx ) override
 	{
-		return user_format_guid_generator::format(
+		return guid_generator::format(
 			ctx.m_guid,
 			"{%{!D0}-%{!W2}-%{!W3}-%{!W4}-%{!B10}%{!B11}%{!B12}%{!B13}%{!B14}%{!B15}}",
 			ctx.m_flags,
@@ -121,7 +121,7 @@ public:
 	}
 	bool	format( std::string & buf, context & ctx ) override
 	{
-		return user_format_guid_generator::format(
+		return guid_generator::format(
 			ctx.m_guid,
 			"[Guid(\"%{D0}-%{W2}-%{W3}-%{W4}-%{B10}%{B11}%{B12}%{B13}%{B14}%{B15}\")]",
 			ctx.m_flags,
@@ -137,7 +137,7 @@ public:
 	}
 	bool	format( std::string & buf, context & ctx ) override
 	{
-		return user_format_guid_generator::format(
+		return guid_generator::format(
 			ctx.m_guid,
 			"<Guid(\"%{D0}-%{W2}-%{W3}-%{W4}-%{B10}%{B11}%{B12}%{B13}%{B14}%{B15}\")>",
 			ctx.m_flags,
@@ -153,7 +153,7 @@ public:
 	}
 	bool	format( std::string & buf, context & ctx ) override
 	{
-		return user_format_guid_generator::format(
+		return guid_generator::format(
 			ctx.m_guid,
 			"// {%{!D0}-%{!W2}-%{!W3}-%{!W4}-%{!B10}%{!B11}%{!B12}%{!B13}%{!B14}%{!B15}}\r\n"
 			"guid(%{D0}-%{W2}-%{W3}-%{W4}-%{B10}%{B11}%{B12}%{B13}%{B14}%{B15})",
@@ -170,7 +170,7 @@ public:
 	}
 	bool	format( std::string & buf, context & ctx ) override
 	{
-		return user_format_guid_generator::format(
+		return guid_generator::format(
 			ctx.m_guid,
 			"// {%{!D0}-%{!W2}-%{!W3}-%{!W4}-%{!B10}%{!B11}%{!B12}%{!B13}%{!B14}%{!B15}}\r\n"
 			"static readonly Guid %{s'Name'} = new Guid(0x%{d0}, 0x%{w2}, 0x%{w3}, 0x%{w4}, 0x%{b10}, 0x%{b11}, 0x%{b12}, 0x%{b13}, 0x%{b14}, 0x%{b15});",
@@ -187,7 +187,7 @@ public:
 	}
 	bool	format( std::string & buf, context & ctx ) override
 	{
-		return user_format_guid_generator::format(
+		return guid_generator::format(
 			ctx.m_guid,
 			"' {%{!D0}-%{!W2}-%{!W3}-%{!W4}-%{!B10}%{!B11}%{!B12}%{!B13}%{!B14}%{!B15}}\r\n"
 			"Shared ReadOnly %{s'Name'} As Guid = New Guid(&H%{d0}, &H%{w2}, &H%{w3}, &H%{w4}, &H%{b10}, &H%{b11}, &H%{b12}, &H%{b13}, &H%{b14}, &H%{b15})",
