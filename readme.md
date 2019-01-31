@@ -5,8 +5,18 @@ Copyright (c) 2019 Akimov Vitaly.
 
 Screenshots
 -----------------
-![screenshot 1](./docs/images/screenshot1.jpg)
 
+Default window state:
+![Default window](./wiki/images/screenshot1.jpg)
+
+List of available GUID generators:
+![GUID generators](./wiki/images/screenshot2.jpg)
+
+List of available GUID formats:
+![GUID formats](./wiki/images/screenshot3.jpg)
+
+Internal help:
+![Help window](./wiki/images/screenshot4.jpg)
 
 GUID generators
 -----------------
