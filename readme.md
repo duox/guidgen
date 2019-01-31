@@ -10,13 +10,13 @@ Default window state:
 ![Default window](https://github.com/duox/guidgen/blob/master/docs/images/screenshot01.png)
 
 List of available GUID generators:
-![GUID generators](https://github.com/duox/guidgen/blob/master/docs/images/screenshot2.jpg)
+![GUID generators](https://github.com/duox/guidgen/blob/master/docs/images/screenshot02.png)
 
 List of available GUID formats:
-![GUID formats](https://github.com/duox/guidgen/blob/master/docs/images/screenshot3.jpg)
+![GUID formats](https://github.com/duox/guidgen/blob/master/docs/images/screenshot02.png)
 
 Internal help:
-![Help window](https://github.com/duox/guidgen/blob/master/docs/images/screenshot4.jpg)
+![Help window](https://github.com/duox/guidgen/blob/master/docs/images/screenshot02.png)
 
 GUID generators
 -----------------
