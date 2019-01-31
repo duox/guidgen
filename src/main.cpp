@@ -353,13 +353,14 @@ INT_PTR CALLBACK MainDialogProc( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPa
 		MINMAXINFO * mmi = (MINMAXINFO *) lParam;
 		mmi->ptMinTrackSize.x = g_InitialWindowRect.right - g_InitialWindowRect.left;
 		mmi->ptMinTrackSize.y = g_InitialWindowRect.bottom - g_InitialWindowRect.top;
+		}return FALSE;
+	case WM_NCHITTEST:{
+		int lResult = (int) DefWindowProc( hwnd, uMsg, wParam, lParam );
+		::SetWindowLongPtr( hwnd, DWLP_MSGRESULT, HTCLIENT == lResult ? HTCAPTION : lResult );
 		}break;
-	case WM_NCHITTEST:
-		SetDlgMsgResult( hwnd, WM_NCHITTEST, HTCAPTION );
-		break;
 	case WM_SIZE:
 		OnSize( hwnd );
-		break;
+		return FALSE;
 	case WM_COMMAND:
 		switch( LOWORD(wParam) )
 		{
@@ -412,7 +413,6 @@ INT_PTR CALLBACK MainDialogProc( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPa
 	default:
 		return FALSE;
 	}
-	UNREFERENCED_PARAMETER( lParam );
 	return TRUE;
 }
 

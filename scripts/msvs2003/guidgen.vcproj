@@ -2,7 +2,7 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="7.10"
-	Name="guidgen"
+	Name="guidgen.exe"
 	ProjectGUID="{FD7DA76B-3ED2-47C3-9BD7-A2267CC5D8FF}"
 	Keyword="Win32Proj">
 	<Platforms>

@@ -49,14 +49,14 @@ class IMPLEMENT_OLECREATE_guid_generator : public guid_generator
 public:
 	virtual const char *	get_text() const override
 	{
-		return "IMPLEMENT_OLECREATE( Class, Name, ...)";
+		return "IMPLEMENT_OLECREATE( Class, Name, ...);";
 	}
 	virtual bool	format( std::string & buf, context & ctx ) override
 	{
 		return guid_generator::format(
 			ctx.m_guid,
 			"// {%{!D0}-%{!W2}-%{!W3}-%{!B8}%{!B9}-%{!B10}%{!B11}%{!B12}%{!B13}%{!B14}%{!B15}}\r\n"
-			"IMPLEMENT_OLECREATE( %{s'Class'}, %{s'Name'}, 0x%{d0}, 0x%{w2}, 0x%{w3}, 0x%{b8}%{b9}, 0x%{b10}, 0x%{b11}, 0x%{b12}, 0x%{b13}, 0x%{b14}, 0x%{b15} )",
+			"IMPLEMENT_OLECREATE( %{s'Class'}, %{s'Name'}, 0x%{d0}, 0x%{w2}, 0x%{w3}, 0x%{b8}, 0x%{b9}, 0x%{b10}, 0x%{b11}, 0x%{b12}, 0x%{b13}, 0x%{b14}, 0x%{b15} );",
 			ctx.m_flags,
 			buf );
 	}
@@ -66,14 +66,14 @@ class DEFINE_GUID_guid_generator : public guid_generator
 public:
 	virtual const char *	get_text() const override
 	{
-		return "DEFINE_GUID( Name, ...)";
+		return "DEFINE_GUID( Name, ...);";
 	}
 	virtual bool	format( std::string & buf, context & ctx ) override
 	{
 		return guid_generator::format(
 			ctx.m_guid,
 			"// {%{!D0}-%{!W2}-%{!W3}-%{!B8}%{!B9}-%{!B10}%{!B11}%{!B12}%{!B13}%{!B14}%{!B15}}\r\n"
-			"DEFINE_GUID( %{s'Name'}, 0x%{d0}, 0x%{w2}, 0x%{w3}, 0x%{b8}%{b9}, 0x%{b10}, 0x%{b11}, 0x%{b12}, 0x%{b13}, 0x%{b14}, 0x%{b15} )",
+			"DEFINE_GUID( %{s'Name'}, 0x%{d0}, 0x%{w2}, 0x%{w3}, 0x%{b8}, 0x%{b9}, 0x%{b10}, 0x%{b11}, 0x%{b12}, 0x%{b13}, 0x%{b14}, 0x%{b15} );",
 			ctx.m_flags,
 			buf );
 	}
@@ -83,14 +83,14 @@ class static_const_GUID_guid_generator : public guid_generator
 public:
 	virtual const char *	get_text() const override
 	{
-		return "static const struct GUID Name = { ... }";
+		return "static const struct GUID Name = { ... };";
 	}
 	virtual bool	format( std::string & buf, context & ctx ) override
 	{
 		return guid_generator::format(
 			ctx.m_guid,
 			"// {%{!D0}-%{!W2}-%{!W3}-%{!B8}%{!B9}-%{!B10}%{!B11}%{!B12}%{!B13}%{!B14}%{!B15}}\r\n"
-			"static const struct GUID %{s'Name'} = { 0x%{d0}, 0x%{w2}, 0x%{w3}, 0x%{b8}%{b9}, { 0x%{b10}, 0x%{b11}, 0x%{b12}, 0x%{b13}, 0x%{b14}, 0x%{b15} } }",
+			"static const struct GUID %{s'Name'} = { 0x%{d0}, 0x%{w2}, 0x%{w3}, { 0x%{b8}, 0x%{b9}, 0x%{b10}, 0x%{b11}, 0x%{b12}, 0x%{b13}, 0x%{b14}, 0x%{b15} } };",
 			ctx.m_flags,
 			buf );
 	}
@@ -172,7 +172,7 @@ public:
 		return guid_generator::format(
 			ctx.m_guid,
 			"// {%{!D0}-%{!W2}-%{!W3}-%{!B8}%{!B9}-%{!B10}%{!B11}%{!B12}%{!B13}%{!B14}%{!B15}}\r\n"
-			"static readonly Guid %{s'Name'} = new Guid(0x%{d0}, 0x%{w2}, 0x%{w3}, 0x%{b8}%{b9}, 0x%{b10}, 0x%{b11}, 0x%{b12}, 0x%{b13}, 0x%{b14}, 0x%{b15});",
+			"static readonly Guid %{s'Name'} = new Guid(0x%{d0}, 0x%{w2}, 0x%{w3}, 0x%{b8}, 0x%{b9}, 0x%{b10}, 0x%{b11}, 0x%{b12}, 0x%{b13}, 0x%{b14}, 0x%{b15});",
 			ctx.m_flags,
 			buf );
 	}
@@ -189,7 +189,7 @@ public:
 		return guid_generator::format(
 			ctx.m_guid,
 			"' {%{!D0}-%{!W2}-%{!W3}-%{!B8}%{!B9}-%{!B10}%{!B11}%{!B12}%{!B13}%{!B14}%{!B15}}\r\n"
-			"Shared ReadOnly %{s'Name'} As Guid = New Guid(&H%{d0}, &H%{w2}, &H%{w3}, &H%{b8}%{b9}, &H%{b10}, &H%{b11}, &H%{b12}, &H%{b13}, &H%{b14}, &H%{b15})",
+			"Shared ReadOnly %{s'Name'} As Guid = New Guid(&H%{d0}, &H%{w2}, &H%{w3}, &H%{b8}, &H%{b9}, &H%{b10}, &H%{b11}, &H%{b12}, &H%{b13}, &H%{b14}, &H%{b15})",
 			ctx.m_flags,
 			buf );
 	}
