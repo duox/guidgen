@@ -3,7 +3,7 @@
   <ItemGroup>
     <Filter Include="sources">
       <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx;h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
     </Filter>
     <Filter Include="resources">
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
@@ -28,17 +28,17 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\src\resource.h">
-      <Filter>resources</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\pch.h">
+    <ClInclude Include="..\..\src\guid_generator.h">
       <Filter>sources</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\main.h">
       <Filter>sources</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\guid_generator.h">
+    <ClInclude Include="..\..\src\pch.h">
       <Filter>sources</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\resource.h">
+      <Filter>resources</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

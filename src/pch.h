@@ -8,27 +8,35 @@
 #define STRICT
 #define _WIN32_WINNT	0x0500
 
-#ifndef _MSC_VER_71
-# define _MSC_VER_71		1310
-#endif // ndef _MSC_VER_71
-#define _MSC_VER_2015		1500
+#define	_MSC_VER_50		1100	/* 5.0 */
+#define	_MSC_VER_60		1200	/* 6.0 (98) */
+#define	_MSC_VER_70		1300	/* 7.0	*/
+#define	_MSC_VER_71		1310	/* 2003	7.1	*/
+#define	_MSC_VER_80		1400	/* 2005	*/
+#define	_MSC_VER_90		1500	/* 2008	*/
+#define	_MSC_VER_100	1600	/* 2010	*/
+#define	_MSC_VER_110	1700	/* 2012	*/
+#define	_MSC_VER_120	1800	/* 2013	*/
+#define	_MSC_VER_140	1900	/* 2015	*/
 
-#include <windows.h>
-#include <windowsx.h>
-
-#include <crtdbg.h>
-#include <tchar.h>
+#define	_MSC_2003	_MSC_VER_71		/* 2003	7.1	*/
+#define	_MSC_2005	_MSC_VER_80		/* 2005	*/
+#define	_MSC_2008	_MSC_VER_90		/* 2008	*/
+#define	_MSC_2010	_MSC_VER_100	/* 2010	*/
+#define	_MSC_2012	_MSC_VER_110	/* 2012	*/
+#define	_MSC_2013	_MSC_VER_120	/* 2013	*/
+#define	_MSC_2015	_MSC_VER_140	/* 2015	*/
 
 #ifdef _MSC_VER
 
 // abstract and override specifiers
 #pragma warning(disable: 4481)	//: nonstandard extension used: override specifier 'abstract'
-#if !defined abstract && defined _MSC_VER && _MSC_VER < _MSC_VER_2015
+#if !defined abstract && defined _MSC_VER && _MSC_VER < _MSC_2015
 # define abstract	=0
 #endif // ndef abstract
-#if !defined override && defined _MSC_VER && _MSC_VER < _MSC_VER_2015
+#if !defined override && defined _MSC_VER && _MSC_VER < _MSC_2015
 # define override
-#endif // !defined override && defined _MSC_VER && _MSC_VER < _MSC_VER_2015
+#endif // !defined override && defined _MSC_VER && _MSC_VER < _MSC_2015
 
 // some secure functions not present in VS 2003
 #if _MSC_VER <= _MSC_VER_71
@@ -46,7 +54,7 @@ class exception {};	// workaround for MSVS2003 bug
 
 // define nullptr for those compilers that do not define it
 #undef nullptr
-#if defined _MSC_VER && _MSC_VER < _MSC_VER_2015
+#if defined _MSC_VER && _MSC_VER < _MSC_2015
 # ifndef __cplusplus
 #  define nullptr		0
 # else
@@ -61,6 +69,12 @@ using std::nullptr;
 # include <cstddef>
 #endif
 #include <string>
+
+#include <windows.h>
+#include <windowsx.h>
+
+#include <crtdbg.h>
+#include <tchar.h>
 
 #ifndef countof
 # define countof(a)		( sizeof(a) / sizeof(*(a)) )

@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "guidgen", "guidgen.vcxproj", "{772405A1-FC3E-43D8-9C9B-294B827A5F46}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		final|x64 = final|x64
+		final|x86 = final|x86
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{772405A1-FC3E-43D8-9C9B-294B827A5F46}.Debug|x64.ActiveCfg = debug|x64
+		{772405A1-FC3E-43D8-9C9B-294B827A5F46}.Debug|x64.Build.0 = debug|x64
+		{772405A1-FC3E-43D8-9C9B-294B827A5F46}.Debug|x86.ActiveCfg = release|Win32
+		{772405A1-FC3E-43D8-9C9B-294B827A5F46}.Debug|x86.Build.0 = release|Win32
+		{772405A1-FC3E-43D8-9C9B-294B827A5F46}.final|x64.ActiveCfg = final|x64
+		{772405A1-FC3E-43D8-9C9B-294B827A5F46}.final|x64.Build.0 = final|x64
+		{772405A1-FC3E-43D8-9C9B-294B827A5F46}.final|x86.ActiveCfg = final|Win32
+		{772405A1-FC3E-43D8-9C9B-294B827A5F46}.final|x86.Build.0 = final|Win32
+		{772405A1-FC3E-43D8-9C9B-294B827A5F46}.Release|x64.ActiveCfg = release|x64
+		{772405A1-FC3E-43D8-9C9B-294B827A5F46}.Release|x64.Build.0 = release|x64
+		{772405A1-FC3E-43D8-9C9B-294B827A5F46}.Release|x86.ActiveCfg = release|Win32
+		{772405A1-FC3E-43D8-9C9B-294B827A5F46}.Release|x86.Build.0 = release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {B863767B-C21A-4475-AC25-F5B0FEA3271A}
+	EndGlobalSection
+EndGlobal
