@@ -1,22 +1,55 @@
 /*guid_generator.cxx*/
+// SPDX-License-Identifier: LGPL-2.1+
+/** @file
+ *
+ * @brief GUID related code.
+ *
+ */
 #include "pch.h"
 #include "main.h"
 
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// GUID parser
+// TODO: manual GUID parsing with correct parsing of non-standard GUID representations
+
+/**
+ * @brief Parse GUID representation.
+ *
+ * @param[out] buf (GUID &) reference to variable receiving parsed GUID data.
+ * @param[in] data (const char *) pointer to string.
+ *
+ * @return (bool) operation status.
+ */
 bool guid_generator::parse_guid( GUID & buf, const char * data )
 {
 	wchar_t wdata[128] = L"";
+	SetLastError( NO_ERROR );
 	MultiByteToWideChar( CP_ACP, 0, data, (int) strlen( data ), wdata, countof(wdata) );
-	IIDFromString( wdata, &buf );
-	return true;
+	if( NO_ERROR != GetLastError() )
+		return false;
+
+	return !!SUCCEEDED( IIDFromString( wdata, &buf ) );
 }
 
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// GUID generator
+
+/**
+ * @brief Generate GUID data.
+ *
+ * @param[in] type (guid_type_t) GUID generation type id.
+ * @param[out] guid (GUID &) reference to variable receiving generated GUID data.
+ * @param[in] user_input (const char *) pointer to string containing data from the manual input field.
+ *
+ * @return (bool) operation status.
+ */
 bool guid_generator::generate( guid_type_t type, GUID & guid, const char * user_input )
 {
 	switch( type )
 	{
 	case guid_generator::guid_type_random:{
 		HRESULT hResult = CoCreateGuid( &guid );
-		if( S_OK != hResult )
+		if( FAILED(hResult) )
 		{
 			RPC_STATUS RpcStatus = UuidCreate( &guid );
 			if( RPC_S_OK != RpcStatus && RPC_S_UUID_LOCAL_ONLY != RpcStatus )
@@ -24,8 +57,7 @@ bool guid_generator::generate( guid_type_t type, GUID & guid, const char * user_
 		}
 		}break;
 	case guid_generator::guid_type_manual:
-		parse_guid( guid, user_input );
-		break;
+		return parse_guid( guid, user_input );
 	case guid_generator::guid_type_null:
 		memset( &guid, 0, sizeof(guid) );
 		break;
@@ -39,6 +71,19 @@ bool guid_generator::generate( guid_type_t type, GUID & guid, const char * user_
 	return true;
 }
 
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// GUID formatter
+
+/**
+ * @brief Format GUID into string.
+ *
+ * @param[in] guid (const GUID &) reference to GUID to format.
+ * @param[in] format (const char *) format string.
+ * @param[in] flags (unsigned) operation flags (see guid_generator::bf_* constants).
+ * @param[out] buf (std::string &) rference to string variable receiving formatted string.
+ *
+ * @return (bool) operation status.
+ */
 bool guid_generator::format( const GUID & guid, const char * format, unsigned flags, std::string & buf )
 {
 	// Check current state
@@ -178,7 +223,6 @@ bool guid_generator::format( const GUID & guid, const char * format, unsigned fl
 	}
 
 	// Exit
-	//buf = nullptr == format ? "111" : format;
 	return true;
 }
 

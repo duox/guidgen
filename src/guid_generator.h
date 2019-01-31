@@ -1,5 +1,20 @@
 /*guid_generator.h*/
+// SPDX-License-Identifier: LGPL-2.1+
+/** @file
+ *
+ * @brief GUID related declarations and definitions.
+ *
+ */
 
+/**
+ * @brief Default format string.
+ */
+#define SZ_GUID_FORMAT_REGISTRY		"{%{!D0}-%{!W2}-%{!W3}-%{!B8}%{!B9}-%{!B10}%{!B11}%{!B12}%{!B13}%{!B14}%{!B15}}"
+
+/**
+ * @brief Base abstract class for all GUID generators.
+ *
+ */
 class guid_generator
 {
 public:
@@ -30,6 +45,9 @@ public:
 	virtual bool	format( std::string & buf, context & ctx ) abstract;
 	bool	format( const GUID & guid, const char * format, unsigned flags, std::string & buf );
 };
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// All format generators
 
 class user_format_guid_generator : public guid_generator
 {
@@ -106,7 +124,7 @@ public:
 	{
 		return guid_generator::format(
 			ctx.m_guid,
-			"{%{!D0}-%{!W2}-%{!W3}-%{!B8}%{!B9}-%{!B10}%{!B11}%{!B12}%{!B13}%{!B14}%{!B15}}",
+			SZ_GUID_FORMAT_REGISTRY,
 			ctx.m_flags,
 			buf );
 	}

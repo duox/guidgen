@@ -1,4 +1,10 @@
 /*main.h*/
+// SPDX-License-Identifier: LGPL-2.1+
+/** @file
+ *
+ * @brief Common and potentially changeable definitions shared among all source files.
+ *
+ */
 
 #include "resource.h"
 

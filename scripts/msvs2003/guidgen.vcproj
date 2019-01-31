@@ -4,6 +4,7 @@
 	Version="7.10"
 	Name="guidgen.exe"
 	ProjectGUID="{FD7DA76B-3ED2-47C3-9BD7-A2267CC5D8FF}"
+	RootNamespace="guidgen.exe"
 	Keyword="Win32Proj">
 	<Platforms>
 		<Platform
@@ -12,8 +13,8 @@
 	<Configurations>
 		<Configuration
 			Name="debug|Win32"
-			OutputDirectory="Debug"
-			IntermediateDirectory="Debug"
+			OutputDirectory="$(SolutionDir)../../output/bin/$(ConfigurationName)"
+			IntermediateDirectory="$(SolutionDir)../../output/obj/$(ConfigurationName)/$(ProjectName)"
 			ConfigurationType="1"
 			CharacterSet="2">
 			<Tool
@@ -24,6 +25,7 @@
 				MinimalRebuild="TRUE"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="5"
+				BufferSecurityCheck="TRUE"
 				EnableFunctionLevelLinking="TRUE"
 				TreatWChar_tAsBuiltInType="TRUE"
 				ForceConformanceInForLoopScope="TRUE"
@@ -37,10 +39,14 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				OutputFile="$(OutDir)/guidgen.exe"
+				OutputFile="$(OutDir)/$(ProjectName)"
 				LinkIncremental="2"
 				GenerateDebugInformation="TRUE"
-				ProgramDatabaseFile="$(OutDir)/guidgen.pdb"
+				ProgramDatabaseFile="$(SolutionDir)../../output/sym/$(ConfigurationName)/$(ProjectName).pdb"
+				GenerateMapFile="TRUE"
+				MapFileName="$(SolutionDir)../../output/sym/$(ConfigurationName)/$(ProjectName).map"
+				MapExports="TRUE"
+				MapLines="TRUE"
 				SubSystem="2"
 				TargetMachine="1"/>
 			<Tool
@@ -66,8 +72,8 @@
 		</Configuration>
 		<Configuration
 			Name="release|Win32"
-			OutputDirectory="Release"
-			IntermediateDirectory="Release"
+			OutputDirectory="$(SolutionDir)../../output/bin/$(ConfigurationName)"
+			IntermediateDirectory="$(SolutionDir)../../output/obj/$(ConfigurationName)/$(ProjectName)"
 			ConfigurationType="1"
 			CharacterSet="2">
 			<Tool
@@ -88,9 +94,14 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				OutputFile="$(OutDir)/guidgen.exe"
+				OutputFile="$(OutDir)/$(ProjectName)"
 				LinkIncremental="1"
 				GenerateDebugInformation="TRUE"
+				ProgramDatabaseFile="$(SolutionDir)../../output/sym/$(ConfigurationName)/$(ProjectName).pdb"
+				GenerateMapFile="TRUE"
+				MapFileName="$(SolutionDir)../../output/sym/$(ConfigurationName)/$(ProjectName).map"
+				MapExports="TRUE"
+				MapLines="TRUE"
 				SubSystem="2"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
@@ -118,8 +129,8 @@
 		</Configuration>
 		<Configuration
 			Name="final|Win32"
-			OutputDirectory="$(ConfigurationName)"
-			IntermediateDirectory="$(ConfigurationName)"
+			OutputDirectory="$(SolutionDir)../../output/bin/$(ConfigurationName)"
+			IntermediateDirectory="$(SolutionDir)../../output/obj/$(ConfigurationName)/$(ProjectName)"
 			ConfigurationType="1"
 			CharacterSet="2">
 			<Tool
@@ -131,7 +142,9 @@
 				OmitFramePointers="TRUE"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;FINAL"
 				StringPooling="TRUE"
+				ExceptionHandling="FALSE"
 				RuntimeLibrary="4"
+				BufferSecurityCheck="FALSE"
 				TreatWChar_tAsBuiltInType="TRUE"
 				ForceConformanceInForLoopScope="TRUE"
 				RuntimeTypeInfo="TRUE"
@@ -139,14 +152,20 @@
 				PrecompiledHeaderThrough="pch.h"
 				WarningLevel="4"
 				Detect64BitPortabilityProblems="TRUE"
-				DebugInformationFormat="3"/>
+				DebugInformationFormat="3"
+				CallingConvention="1"/>
 			<Tool
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				OutputFile="$(OutDir)/guidgen.exe"
+				OutputFile="$(OutDir)/$(ProjectName)"
 				LinkIncremental="1"
-				GenerateDebugInformation="TRUE"
+				GenerateDebugInformation="FALSE"
+				ProgramDatabaseFile="$(SolutionDir)../../output/sym/$(ConfigurationName)/$(ProjectName).pdb"
+				GenerateMapFile="TRUE"
+				MapFileName="$(SolutionDir)../../output/sym/$(ConfigurationName)/$(ProjectName).map"
+				MapExports="TRUE"
+				MapLines="TRUE"
 				SubSystem="2"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"

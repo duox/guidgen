@@ -9,14 +9,14 @@
 #include "pch.h"
 #include "main.h"
 
-HINSTANCE	g_hInstance;	/// < application module instance
-HWND		g_hwndMain;		/// < handle to the main window
-HACCEL		g_haccMain;		/// < handle to the application accelerators
-GUID		g_Guid;			/// < currently displayed GUID
-RECT		g_InitialClientRect;	/// < initial rectnagle of the main dialog window
-RECT		g_InitialWindowRect;	/// < initial rectnagle of the main dialog window
+HINSTANCE	g_hInstance;			///< application module instance
+HWND		g_hwndMain;				///< handle to the main window
+HACCEL		g_haccMain;				///< handle to the application accelerators
+GUID		g_Guid;					///< currently displayed GUID
+RECT		g_InitialClientRect;	///< initial rectnagle of the main dialog window
+RECT		g_InitialWindowRect;	///< initial rectnagle of the main dialog window
 
-void OnUpdateGuidFormat( HWND hwnd, HWND hwndChild );
+static void OnUpdateGuidFormat( HWND hwnd, HWND hwndChild );
 
 /**
  * @brief List of all generators.
@@ -48,7 +48,7 @@ guid_generator * g_guid_generators[] =
 ///}
 
 #if 0	// TODO
-bool is_console(HANDLE h)
+static inline bool is_console(HANDLE h)
 {
 	if (!h) return false;
 
@@ -134,7 +134,14 @@ int CALLBACK WinMain( IN HINSTANCE hInstance, IN HINSTANCE hPrevInstance, IN LPS
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void GenerateGuid( HWND hwnd, BOOL UseExisting )
+/**
+ * @brief Function called when GUID must be generated, formatted and displayed.
+ *
+ * @param[in] hwnd (HWND) handle to the main window.
+ * @param[in] UseExisting (BOOL) flag that inhibits generation of new GUID so the function simply updates GUID representation string.
+ *
+ */
+static inline void GenerateGuid( HWND hwnd, BOOL UseExisting )
 {
 	// Get active generator
 	HWND hwndChild = GetDlgItem( hwnd, IDC_FORMAT_LIST );
@@ -189,13 +196,13 @@ void GenerateGuid( HWND hwnd, BOOL UseExisting )
 	SetDlgItemTextA( hwnd, IDC_GUID, buf.c_str() );
 }
 
-void UpdateGuid( HWND hwnd )
+static inline void UpdateGuid( HWND hwnd )
 {
 	StoreConfig( hwnd );
 	GenerateGuid( hwnd, TRUE );
 }
 
-void CopyString( HWND hwnd )
+static inline void CopyString( HWND hwnd )
 {
 	SendDlgItemMessage( hwnd, IDC_RESULT, EM_SETSEL, 0, -1 );
 	SendDlgItemMessage( hwnd, IDC_RESULT, WM_COPY, 0, 0 );
@@ -203,19 +210,31 @@ void CopyString( HWND hwnd )
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-#define CTRL_ANCHOR_TOP		0x0001
-#define CTRL_ANCHOR_LEFT	0x0002
-#define CTRL_ANCHOR_BOTTOM	0x0004
-#define CTRL_ANCHOR_RIGHT	0x0008
-#define CTRL_MOVE_TOP		0x0010
-#define CTRL_MOVE_LEFT		0x0020
+/**
+ * @brief Flags specifying behavior of child windows.
+ */
+///{
+static const unsigned CTRL_ANCHOR_TOP		= 0x0001;	///< keep window top border at the same offset to the parent top border
+static const unsigned CTRL_ANCHOR_LEFT		= 0x0002;	///< keep window left border at the same offset to the parent left border
+static const unsigned CTRL_ANCHOR_BOTTOM	= 0x0004;	///< keep window bottom border at the same offset to the parent bottom border
+static const unsigned CTRL_ANCHOR_RIGHT		= 0x0008;	///< keep window right border at the same offset to the parent right border
+static const unsigned CTRL_MOVE_TOP			= 0x0010;	///< keep window top/bottom borders at the same offset to the parent top border
+static const unsigned CTRL_MOVE_LEFT		= 0x0020;	///< keep window left/right border at the same offset to the parent left border
+/**
+ * @brief Structure that defines all information types required to keep child window size and position synchronized.
+ *
+ */
 struct control_info
 {
-	unsigned	m_id;
-	unsigned	m_flags;
-	RECT		m_margins;
-	SIZE		m_initial_size;
+	unsigned	m_id;			///< control identifier
+	unsigned	m_flags;		///< behavior flags (see CTRL_* flags)
+	RECT		m_margins;		///< control initial distances to parent sides for all four sides
+	SIZE		m_initial_size;	///< initial size of control
 };
+/**
+ * @brief List of all controls that can change size and/or position during resize of the parent window.
+ *
+ */
 static control_info g_ctrl_list[] =
 {
 	{ IDC_GUID_TYPE,			CTRL_ANCHOR_TOP | CTRL_ANCHOR_LEFT | CTRL_ANCHOR_RIGHT },
@@ -232,7 +251,12 @@ static control_info g_ctrl_list[] =
 	{ IDHELP,					CTRL_MOVE_TOP | CTRL_ANCHOR_LEFT | CTRL_ANCHOR_BOTTOM },
 };
 
-void OnSize( HWND hwnd )
+/**
+ * @brief Callback called after the main dialog window size has changed.
+ *
+ * @param[in] hwnd (HWND) dialog window handle.
+ */
+static inline void OnSize( HWND hwnd )
 {
 	RECT rc;
 	HDWP hdwp = BeginDeferWindowPos( countof(g_ctrl_list) );
@@ -264,7 +288,13 @@ void OnSize( HWND hwnd )
 	EndDeferWindowPos( hdwp );
 }
 
-void OnUpdateGuidType( HWND hwnd, HWND hwndChild )
+/**
+ * @brief Function called by those who wishes to update status of the GUID type.
+ *
+ * @param[in] hwnd (HWND) dialog window handle.
+ * @param[in] hwndChild (HWND) handle to the format GUID type drop down.
+ */
+static inline void OnUpdateGuidType( HWND hwnd, HWND hwndChild )
 {
 	EnableWindow(
 		GetDlgItem( hwnd, IDC_MANUAL_GUID ),
@@ -272,7 +302,14 @@ void OnUpdateGuidType( HWND hwnd, HWND hwndChild )
 		);
 	StoreConfig( hwnd );
 }
-void OnUpdateGuidFormat( HWND hwnd, HWND hwndChild )
+
+/**
+ * @brief Function called by those who wishes to update status of the GUID format.
+ *
+ * @param[in] hwnd (HWND) dialog window handle.
+ * @param[in] hwndChild (HWND) handle to the format edit control.
+ */
+static inline void OnUpdateGuidFormat( HWND hwnd, HWND hwndChild )
 {
 	EnableWindow(
 		GetDlgItem( hwnd, IDC_USER_FORMAT_STRING ),
@@ -280,7 +317,13 @@ void OnUpdateGuidFormat( HWND hwnd, HWND hwndChild )
 		);
 	UpdateGuid( hwnd );
 }
-void OnInitDialog( HWND hwnd )
+
+/**
+ * @brief Dialog initialization handler procedure.
+ *
+ * @param[in] hwnd (HWND) dialog window handle.
+ */
+static inline void OnInitDialog( HWND hwnd )
 {
 	HWND hwndChild;
 
@@ -334,6 +377,16 @@ void OnInitDialog( HWND hwnd )
 	GenerateGuid( hwnd, FALSE );
 }
 
+/**
+ * @brief Main dialog procedure.
+ *
+ * @param[in] hwnd (HWND) dialog window handle.
+ * @param[in] uMsg (UINT) message identifier.
+ * @param[in] wParam (WPARAM) 1st message parameter.
+ * @param[in] lParam (WPARAM) 2nd message parameter.
+ *
+ * @return (INT_PTR) return value depends on the message sent.
+ */
 INT_PTR CALLBACK MainDialogProc( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam )
 {
 	switch( uMsg )

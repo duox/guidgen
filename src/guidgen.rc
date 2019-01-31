@@ -108,8 +108,8 @@ BEGIN
                     IDC_STATIC,7,59,175,16
     LTEXT           "User format specification: %{[#][!]TI}, where:\n# - optional width w/ optional leading zero,\n! - optional flag that forces zero fill (0x00AF);\nT - one of b, B, w, W, d, D,\nI - element index (b/B: 0..15, w/W: 0..7, d/D: 0..3);",
                     IDC_STATIC,7,81,172,44
-    LTEXT           "Copyright (c) 2019 duox. Freeware, for licensing information please refer to the docs/ directory or duox/GUIDgen github page.",
-                    IDC_STATIC,7,18,172,26
+    LTEXT           "Copyright (c) 2019 duox. Freeware, licensed under LGPL 2.1. For more information, please refer to the application documentation or visit github.com/duox project page.",
+                    IDC_STATIC,7,18,172,33
     LTEXT           "GUIDgen version 0.1.alpha/Jan2019.",IDC_STATIC,7,7,120,
                     8
     PUSHBUTTON      "&Delete config (uninstall)",IDC_DELETE_CONFIG,124,188,
