@@ -7,16 +7,16 @@ Screenshots
 -----------------
 
 Default window state:
-![Default window](./docs/images/screenshot1.jpg)
+![Default window](docs/images/screenshot1.jpg)
 
 List of available GUID generators:
-![GUID generators](./docs/images/screenshot2.jpg)
+![GUID generators](docs/images/screenshot2.jpg)
 
 List of available GUID formats:
-![GUID formats](./docs/images/screenshot3.jpg)
+![GUID formats](docs/images/screenshot3.jpg)
 
 Internal help:
-![Help window](./docs/images/screenshot4.jpg)
+![Help window](docs/images/screenshot4.jpg)
 
 GUID generators
 -----------------
