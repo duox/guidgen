@@ -1,7 +1,8 @@
 GUIDgen - alternative GUID generator GUI.
 ==============================================
 
-Copyright (c) 2019 Akimov Vitaly.
+Author: Akimov Vitaly.
+License: LGPL 2.1.
 
 Screenshots
 -----------------

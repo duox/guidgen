@@ -94,12 +94,11 @@ bool guid_generator::format( const GUID & guid, const char * format, unsigned fl
 	const char * src = format, * const src_end = format + strlen( format );
 	while( src < src_end )
 	{
-		if( '%' != *src )
+		if( '%' != *src || '%' == *++ src )
 		{
 			buf.push_back( *src ++ );
 			continue;
 		}
-		++ src;
 		if( '{' != *src )
 			return false;
 		++ src;
