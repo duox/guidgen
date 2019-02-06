@@ -8,6 +8,47 @@
 #include "pch.h"
 #include "main.h"
 
+ //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+ // Utility functions
+
+int guid_generator::parse_hex( const char * src, size_t src_size, size_t min_digits, size_t max_digits, const char ** src_ptr )
+{
+	// Check current state
+	if( min_digits > src_size )
+		return -1;
+	if( max_digits > src_size )
+		max_digits = src_size;
+	if( min_digits > max_digits )
+		return -1;
+	if( !isxdigit( *src ) )
+		return -1;
+
+	// Gather all digits
+	int n = 0, digit;
+	int count;
+	for( count = 0; count < max_digits; ++ count, ++ src )
+	{
+		if( '0' <= *src && *src <= '9' )
+			digit = *src - '0';
+		else if( 'A' <= *src && *src <= 'F' )
+			digit = 10 + *src - 'A';
+		else if( 'a' <= *src && *src <= 'f' )
+			digit = 10 + *src - 'a';
+		else
+			break;
+
+		n = n*16 + digit;
+	}
+
+	// Check current state
+	if( count < min_digits )
+		return -1;
+
+	// Exit
+	*src_ptr = src;
+	return n;
+}
+
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // GUID parser
 // TODO: manual GUID parsing with correct parsing of non-standard GUID representations
@@ -101,6 +142,7 @@ bool guid_generator::format( const GUID & rguid, const char * format, unsigned f
 		{
 			if( ignore_next_nl )
 			{
+				ignore_next_nl = false;
 				if( '\n' == *src )
 				{
 					++ src;
@@ -115,7 +157,69 @@ bool guid_generator::format( const GUID & rguid, const char * format, unsigned f
 						++ src;
 					continue;
 				}
-				ignore_next_nl = false;
+				continue;
+			}
+
+			if( '\\' == *src )
+			{
+				int n;
+				++ src;
+				switch( *src )
+				{
+				case 'a':	buf.push_back( '\a' );	break;
+				case 'b':	buf.push_back( '\b' );	break;
+				case 'e':	buf.push_back( 0x1b );	break;	// ESC
+				case 'f':	buf.push_back( '\f' );	break;
+				case 'n':	buf.push_back( '\n' );	break;
+				case 'r':	buf.push_back( '\r' );	break;
+				case 't':	buf.push_back( '\t' );	break;
+				case 'v':	buf.push_back( '\v' );	break;
+				case '\\':	buf.push_back( '\\' );	break;
+				case '\'':	buf.push_back( '\'' );	break;
+				case '\"':	buf.push_back( '\"' );	break;
+				case '\?':	buf.push_back( '\?' );	break;
+				case 'N':	buf.push_back( '\r' );	buf.push_back( '\n' );	break;
+				case 'x':
+					++ src;
+					n = parse_hex( src, src_end - src, 1, src_end - src, &src );
+					if( -1 == n )
+						return false;
+					buf.push_back( (char) n );
+					continue;
+				case 'u':
+					++ src;
+					n = parse_hex( src, src_end - src, 4, 4, &src );
+					if( -1 == n )
+						return false;
+					buf.push_back( (char) /*n*/'?' );	// TODO: UTF-16 to ANSI conversion
+					continue;
+				case 'U':
+					++ src;
+					n = parse_hex( src, src_end - src, 8, 8, &src );
+					if( -1 == n )
+						return false;
+					buf.push_back( (char) /*n*/'?' );	// TODO: UTF-32 to ANSI conversion
+					continue;
+				default:
+					if( '0' <= *src && *src <= '7' )
+					{
+						n = *src++ - '0';
+						if( '0' <= *src && *src <= '7' )
+						{
+							n = n*8 + *src++ - '0';
+							if( '0' <= *src && *src <= '7' )
+								n = n*8 + *src++ - '0';
+						}
+						if( n > 255 )
+							return false;
+						buf.push_back( (char) n );
+						continue;
+					}
+
+					return false;
+				}
+				++ src;
+				continue;
 			}
 
 			buf.push_back( *src ++ );
@@ -185,25 +289,6 @@ bool guid_generator::format( const GUID & rguid, const char * format, unsigned f
 						return false;
 
 					res = generate( guid_type_manual, guid, bf );
-					if( !res )
-						break;
-
-					if( buf.length() > 0 )
-					{
-						if( '\n' == *buf.rbegin() )
-						{
-							buf.pop_back();
-							if( '\r' == *buf.rbegin() )
-								buf.pop_back();
-						}
-						else if( '\r' == *buf.rbegin() )
-						{
-							buf.pop_back();
-							if( '\n' == *buf.rbegin() )
-								buf.pop_back();
-						}
-					}
-					ignore_next_nl = true;
 				}break;
 				default:
 					return false;
@@ -215,6 +300,23 @@ bool guid_generator::format( const GUID & rguid, const char * format, unsigned f
 			if( '}' != *++ src )
 				return false;
 			++ src;
+
+			ignore_next_nl = true;
+			if( buf.length() > 0 )
+			{
+				if( '\n' == *buf.rbegin() )
+				{
+					buf.pop_back();
+					if( '\r' == *buf.rbegin() )
+						buf.pop_back();
+				}
+				else if( '\r' == *buf.rbegin() )
+				{
+					buf.pop_back();
+					if( '\n' == *buf.rbegin() )
+						buf.pop_back();
+				}
+			}
 
 			continue;
 		}
