@@ -25,7 +25,7 @@ int guid_generator::parse_hex( const char * src, size_t src_size, size_t min_dig
 
 	// Gather all digits
 	int n = 0, digit;
-	int count;
+	size_t count;
 	for( count = 0; count < max_digits; ++ count, ++ src )
 	{
 		if( '0' <= *src && *src <= '9' )
@@ -142,12 +142,12 @@ bool guid_generator::format( const GUID & rguid, const char * format, unsigned f
 		{
 			if( ignore_next_nl )
 			{
-				ignore_next_nl = false;
 				if( '\n' == *src )
 				{
 					++ src;
 					if( '\r' == *src )
 						++ src;
+					ignore_next_nl = false;
 					continue;
 				}
 				if( '\r' == *src )
@@ -155,9 +155,9 @@ bool guid_generator::format( const GUID & rguid, const char * format, unsigned f
 					++ src;
 					if( '\n' == *src )
 						++ src;
+					ignore_next_nl = false;
 					continue;
 				}
-				continue;
 			}
 
 			if( '\\' == *src )
@@ -256,11 +256,17 @@ bool guid_generator::format( const GUID & rguid, const char * format, unsigned f
 		// Check for generator
 		if( src[0] == 'g' && src[1] == 'e' && src[2] == 'n' )
 		{
-			src += 3;
-			if( *src == ':' )
-			{
-				bool res;
+			bool res = false;
 
+			src += 3;
+			if( *src == '}' )	// default: random generator
+			{
+				res = generate( guid_type_random, guid, nullptr );
+				-- src;
+			}
+			else if( *src == ':' )
+			{
+				// Generate GUID according to the type of generator
 				src ++;
 				switch( *src )
 				{
@@ -289,35 +295,38 @@ bool guid_generator::format( const GUID & rguid, const char * format, unsigned f
 						return false;
 
 					res = generate( guid_type_manual, guid, bf );
-				}break;
+					}break;
 				default:
 					return false;
 				}
-				if( !res )
-					return false;
 			}
+			if( !res )
+				return false;
 
+			// Check for closing brace
 			if( '}' != *++ src )
 				return false;
 			++ src;
 
+			// Remove previous and next new lines
 			ignore_next_nl = true;
 			if( buf.length() > 0 )
 			{
 				if( '\n' == *buf.rbegin() )
 				{
-					buf.pop_back();
+					pop_back( buf );
 					if( '\r' == *buf.rbegin() )
-						buf.pop_back();
+						pop_back( buf );
 				}
 				else if( '\r' == *buf.rbegin() )
 				{
-					buf.pop_back();
+					pop_back( buf );
 					if( '\n' == *buf.rbegin() )
-						buf.pop_back();
+						pop_back( buf );
 				}
 			}
 
+			// Iterate
 			continue;
 		}
 
