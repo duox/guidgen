@@ -77,15 +77,18 @@ bool guid_generator::generate( guid_type_t type, GUID & guid, const char * user_
 /**
  * @brief Format GUID into string.
  *
- * @param[in] guid (const GUID &) reference to GUID to format.
+ * @param[in] rguid (const GUID &) reference to GUID to format.
  * @param[in] format (const char *) format string.
  * @param[in] flags (unsigned) operation flags (see guid_generator::bf_* constants).
  * @param[out] buf (std::string &) rference to string variable receiving formatted string.
  *
  * @return (bool) operation status.
  */
-bool guid_generator::format( const GUID & guid, const char * format, unsigned flags, std::string & buf )
+bool guid_generator::format( const GUID & rguid, const char * format, unsigned flags, std::string & buf )
 {
+	GUID guid = rguid;
+	bool ignore_next_nl = false;
+
 	// Check current state
 	if( nullptr == format || '\0' == *format )
 		return false;
@@ -96,6 +99,25 @@ bool guid_generator::format( const GUID & guid, const char * format, unsigned fl
 	{
 		if( '%' != *src || '%' == *++ src )
 		{
+			if( ignore_next_nl )
+			{
+				if( '\n' == *src )
+				{
+					++ src;
+					if( '\r' == *src )
+						++ src;
+					continue;
+				}
+				if( '\r' == *src )
+				{
+					++ src;
+					if( '\n' == *src )
+						++ src;
+					continue;
+				}
+				ignore_next_nl = false;
+			}
+
 			buf.push_back( *src ++ );
 			continue;
 		}
@@ -125,6 +147,76 @@ bool guid_generator::format( const GUID & guid, const char * format, unsigned fl
 		{
 			disable_leading_zero = false;
 			++ src;
+		}
+
+		// Check for generator
+		if( src[0] == 'g' && src[1] == 'e' && src[2] == 'n' )
+		{
+			src += 3;
+			if( *src == ':' )
+			{
+				bool res;
+
+				src ++;
+				switch( *src )
+				{
+				case 'r':
+					res = generate( guid_type_random, guid, nullptr );
+					break;
+				case '1':
+					res = generate( guid_type_ones, guid, nullptr );
+					break;
+				case '0':
+					res = generate( guid_type_null, guid, nullptr );
+					break;
+				case '{':{
+					++ src;
+
+					char bf[128], * p = bf, * bf_end = p + countof(bf) - 1;
+					*p ++ = '{';
+					while( p < bf_end && ( isalpha( *src ) || isxdigit( *src ) || '-' == *src ) )
+						*p ++ = *src ++;
+					if( p >= bf_end )
+						return false;
+					*p ++ = '}';
+					*p = '\0';
+
+					if( '}' != *src )
+						return false;
+
+					res = generate( guid_type_manual, guid, bf );
+					if( !res )
+						break;
+
+					if( buf.length() > 0 )
+					{
+						if( '\n' == *buf.rbegin() )
+						{
+							buf.pop_back();
+							if( '\r' == *buf.rbegin() )
+								buf.pop_back();
+						}
+						else if( '\r' == *buf.rbegin() )
+						{
+							buf.pop_back();
+							if( '\n' == *buf.rbegin() )
+								buf.pop_back();
+						}
+					}
+					ignore_next_nl = true;
+				}break;
+				default:
+					return false;
+				}
+				if( !res )
+					return false;
+			}
+
+			if( '}' != *++ src )
+				return false;
+			++ src;
+
+			continue;
 		}
 
 		// Get data type
