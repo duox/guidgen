@@ -129,6 +129,22 @@ public:
 			buf );
 	}
 };
+class raw_format_guid_generator : public guid_generator
+{
+public:
+	virtual const char *	get_text() const override
+	{
+		return "Raw format xxxxxxxxxxxx ... xxxx";
+	}
+	virtual bool	format( std::string & buf, context & ctx ) override
+	{
+		return guid_generator::format(
+			ctx.m_guid,
+			"%{!D0}%{!W2}%{!W3}%{!B8}%{!B9}%{!B10}%{!B11}%{!B12}%{!B13}%{!B14}%{!B15}",
+			ctx.m_flags,
+			buf );
+	}
+};
 class Guid_attribute_1_guid_generator : public guid_generator
 {
 public:
