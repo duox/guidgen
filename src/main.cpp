@@ -49,26 +49,48 @@ guid_generator * g_guid_generators[] =
 };
 ///}
 
-#if 0	// TODO
-static inline bool is_console(HANDLE h)
+#if 0	// couldn't manage to force CMD.EXE to wait until the process terminates
+static void RunCommandLine( int argc, LPWSTR * argv );
+static inline bool is_console( HANDLE h )
 {
-	if (!h) return false;
+	if( NULL == h )
+		return false;
 
-	AttachConsole( ATTACH_PARENT_PROCESS );
+	// Test by using AttachConsole
+	if( !GetConsoleWindow() )
+	{
+		if( AttachConsole( ATTACH_PARENT_PROCESS ) )
+			return true;
+	}
 
-	if (FILE_TYPE_UNKNOWN == ::GetFileType(h) && ERROR_INVALID_HANDLE == GetLastError()) {
-		/* workaround cygwin brokenness */
-		h = CreateFile(_T("CONOUT$"), GENERIC_WRITE, FILE_SHARE_READ | FILE_SHARE_WRITE, NULL, OPEN_EXISTING, 0, NULL);
-		if (h) {
-			::CloseHandle(h);
+	if( 1 < GetConsoleProcessList( nullptr, 0 ) )
+		return true;
+
+	if( !GetConsoleTitle(NULL, 0) && GetLastError() == ERROR_SUCCESS )
+		return true;
+
+	// Test by using CreateFile
+	if( FILE_TYPE_UNKNOWN == ::GetFileType( h ) && ERROR_INVALID_HANDLE == GetLastError() )
+	{
+		// workaround cygwin brokenness
+		h = CreateFile( _T("CONOUT$"), GENERIC_WRITE, FILE_SHARE_READ | FILE_SHARE_WRITE, NULL, OPEN_EXISTING, 0, NULL );
+		if( INVALID_HANDLE_VALUE != h )
+		{
+			::CloseHandle( h );
 			return true;
 		}
 	}
 
+	// Test by using GetCurrentConsoleFont
 	CONSOLE_FONT_INFO cfi;
-	return ::GetCurrentConsoleFont(h, FALSE, &cfi) != 0;
+	if( ::GetCurrentConsoleFont( h, FALSE, &cfi ) != 0 )
+		return true;
+
+	// Exit
+	return false;
 }
-#endif	// 0
+#endif
+
 
 /**
  * @brief Application entry point.
@@ -84,19 +106,19 @@ int CALLBACK WinMain( IN HINSTANCE hInstance, IN HINSTANCE hPrevInstance, IN LPS
 {
 	g_hInstance = hInstance;
 
-#if 0	// TODO
+#if 0	// couldn't manage to force CMD.EXE to wait until the process terminates
+//	SetPriorityClass( GetCurrentProcess(), REALTIME_PRIORITY_CLASS );
+//	SetThreadPriority( GetCurrentThread(), THREAD_PRIORITY_TIME_CRITICAL );
 	HANDLE hConOut = GetStdHandle( STD_OUTPUT_HANDLE );
 	if( is_console( hConOut ) )
 	{
-		DWORD dwWritten = 0;
-		const char buf[] = "\nGUIDgen\n\n\n\n";
-		WriteConsoleA( hConOut, buf, (DWORD) strlen(buf), &dwWritten, NULL );
-		FlushFileBuffers( hConOut );
-		CloseHandle( hConOut );
-		FreeConsole();
+		int argc;
+		LPWSTR * argv = CommandLineToArgvW( GetCommandLineW(), &argc );
+		RunCommandLine( argc, argv );
+		GlobalFree( argv );
 		return 0;
 	}
-#endif // 0
+#endif
 
 	g_hwndMain = CreateDialog( hInstance, MAKEINTRESOURCE(IDD_MAIN), HWND_DESKTOP, MainDialogProc );
 	if( NULL == g_hwndMain )
@@ -470,5 +492,41 @@ INT_PTR CALLBACK MainDialogProc( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPa
 	}
 	return TRUE;
 }
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+#if 0	// couldn't manage to force CMD.EXE to wait until the process terminates
+void RunCommandLine( int argc, LPWSTR * argv )
+{
+	guid_generator * generator = &g_registry_format_guid_generator;
+	guid_generator::context ctx;
+	DWORD nb;
+
+	// Prepare
+	ctx.m_type = guid_generator::guid_type_random;
+	ctx.m_flags = 0;
+
+	// Process arguments
+	if( argc >= 2 )
+	{
+		for( int i = 1; i < argc; ++ i )
+		{
+		}
+	}
+
+	// Generate GUID and display it
+	generator->generate( ctx.m_type, ctx.m_guid, ctx.m_user_input.c_str() );
+
+	std::string buf;
+	generator->format( buf, ctx );
+
+	SetConsoleMode( GetStdHandle( STD_OUTPUT_HANDLE ), ENABLE_PROCESSED_OUTPUT | ENABLE_WRAP_AT_EOL_OUTPUT );
+	WriteFile( GetStdHandle( STD_OUTPUT_HANDLE ), buf.c_str(), DWORD(buf.size()), &nb, NULL );
+	WriteFile( GetStdHandle( STD_OUTPUT_HANDLE ), "\n", 1, &nb, NULL );
+
+	// Exit
+	return;
+}
+#endif
 
 /*END OF main.cpp*/

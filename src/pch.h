@@ -6,7 +6,7 @@
  *
  */
 #define STRICT
-#define _WIN32_WINNT	0x0500
+#define _WIN32_WINNT	0x0501
 
 #define	_MSC_VER_50		1100	/* 5.0 */
 #define	_MSC_VER_60		1200	/* 6.0 (98) */

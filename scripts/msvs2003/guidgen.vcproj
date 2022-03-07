@@ -46,7 +46,6 @@
 				GenerateMapFile="TRUE"
 				MapFileName="$(SolutionDir)../../output/sym/$(ConfigurationName)/$(ProjectName).map"
 				MapExports="TRUE"
-				MapLines="TRUE"
 				SubSystem="2"
 				TargetMachine="1"/>
 			<Tool
