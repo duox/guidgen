@@ -46,7 +46,7 @@
 				GenerateMapFile="TRUE"
 				MapFileName="$(SolutionDir)../../output/sym/$(ConfigurationName)/$(ProjectName).map"
 				MapExports="TRUE"
-				SubSystem="2"
+				SubSystem="1"
 				TargetMachine="1"/>
 			<Tool
 				Name="VCMIDLTool"/>
@@ -101,7 +101,7 @@
 				MapFileName="$(SolutionDir)../../output/sym/$(ConfigurationName)/$(ProjectName).map"
 				MapExports="TRUE"
 				MapLines="TRUE"
-				SubSystem="2"
+				SubSystem="1"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
 				TargetMachine="1"/>
@@ -165,7 +165,7 @@
 				MapFileName="$(SolutionDir)../../output/sym/$(ConfigurationName)/$(ProjectName).map"
 				MapExports="TRUE"
 				MapLines="TRUE"
-				SubSystem="2"
+				SubSystem="1"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
 				TargetMachine="1"/>

@@ -49,15 +49,24 @@ guid_generator * g_guid_generators[] =
 };
 ///}
 
-#if 0	// couldn't manage to force CMD.EXE to wait until the process terminates
-static void RunCommandLine( int argc, LPWSTR * argv );
+static int RunCommandLine( int argc, LPWSTR * argv );
 static inline bool is_console( HANDLE h )
 {
 	if( NULL == h )
 		return false;
 
 	// Test by using AttachConsole
-	if( !GetConsoleWindow() )
+//	FreeConsole();
+//	if( AttachConsole( ATTACH_PARENT_PROCESS ) )
+	{
+		DWORD buf[3];
+		//printf( "GetConsoleProcessList( nullptr, 0 ) => %d (GetLastError() = %d)\n", GetConsoleProcessList( buf, 3 ), GetLastError() );
+		if( 1 < GetConsoleProcessList( buf, 3 ) )
+			return true;
+		FreeConsole();
+	}
+	return false;
+/*	if( !GetConsoleWindow() )
 	{
 		if( AttachConsole( ATTACH_PARENT_PROCESS ) )
 			return true;
@@ -87,9 +96,8 @@ static inline bool is_console( HANDLE h )
 		return true;
 
 	// Exit
-	return false;
+	return false;*/
 }
-#endif
 
 
 /**
@@ -102,11 +110,30 @@ static inline bool is_console( HANDLE h )
  *
  * @return (int) application exit code.
  */
+int __cdecl main( void )
+{
+	int res;
+	HANDLE hConOut = GetStdHandle( STD_OUTPUT_HANDLE );
+	if( is_console( hConOut ) )
+	{
+		int argc;
+		LPWSTR * argv = CommandLineToArgvW( GetCommandLineW(), &argc );
+		res = RunCommandLine( argc, argv );
+		GlobalFree( argv );
+	}
+	else
+	{
+		ShowWindow( GetConsoleWindow(), SW_HIDE );
+		res = WinMain( (HINSTANCE) GetModuleHandle( NULL ), NULL, "", SW_SHOWNORMAL );
+	}
+	return res;
+}
 int CALLBACK WinMain( IN HINSTANCE hInstance, IN HINSTANCE hPrevInstance, IN LPSTR lpCmdLine, IN int nShowCmd )
 {
 	g_hInstance = hInstance;
 
 #if 0	// couldn't manage to force CMD.EXE to wait until the process terminates
+		// so use /SUBSYSTEM:CONSOLE and hide console window AS FAST AS POSSIBLE
 //	SetPriorityClass( GetCurrentProcess(), REALTIME_PRIORITY_CLASS );
 //	SetThreadPriority( GetCurrentThread(), THREAD_PRIORITY_TIME_CRITICAL );
 	HANDLE hConOut = GetStdHandle( STD_OUTPUT_HANDLE );
@@ -122,7 +149,10 @@ int CALLBACK WinMain( IN HINSTANCE hInstance, IN HINSTANCE hPrevInstance, IN LPS
 
 	g_hwndMain = CreateDialog( hInstance, MAKEINTRESOURCE(IDD_MAIN), HWND_DESKTOP, MainDialogProc );
 	if( NULL == g_hwndMain )
+	{
+		MessageBox( HWND_DESKTOP, _T("Cannot create main dialog."), _T("Fatal error"), MB_OK | MB_ICONERROR | MB_TOPMOST );
 		return -1;
+	}
 
 	g_haccMain = LoadAccelerators( hInstance, MAKEINTRESOURCE(IDA_MAIN) );
 
@@ -495,8 +525,7 @@ INT_PTR CALLBACK MainDialogProc( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPa
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-#if 0	// couldn't manage to force CMD.EXE to wait until the process terminates
-void RunCommandLine( int argc, LPWSTR * argv )
+int RunCommandLine( int argc, LPWSTR * argv )
 {
 	guid_generator * generator = &g_registry_format_guid_generator;
 	guid_generator::context ctx;
@@ -525,8 +554,7 @@ void RunCommandLine( int argc, LPWSTR * argv )
 	WriteFile( GetStdHandle( STD_OUTPUT_HANDLE ), "\n", 1, &nb, NULL );
 
 	// Exit
-	return;
+	return 0;
 }
-#endif
 
 /*END OF main.cpp*/
