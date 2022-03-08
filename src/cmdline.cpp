@@ -34,7 +34,6 @@ const char help_string[] =
 " s\t: string value (index parameter is not used).\n"
 "Specifier flags:\n"
 " 0\t: print leading zeroes.\n"
-" !\t: do not print leading zeroes.\n"
 "Index follows numeric type specifier: 0..16 for B/b, 0..8 for W/w, 0..4 for D/d\n"
 "Example usage: %{04B1} - display 1st byte in 4-char field with leading zeroes.\n"
 "GUID source types:\n"

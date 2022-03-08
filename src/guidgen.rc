@@ -63,8 +63,7 @@ END
 //
 
 IDD_MAIN DIALOGEX 0, 0, 214, 209
-STYLE DS_SETFONT | DS_FIXEDSYS | DS_CENTER | WS_MINIMIZEBOX | WS_POPUP | 
-    WS_CAPTION | WS_SYSMENU | WS_THICKFRAME
+STYLE DS_SETFONT | DS_FIXEDSYS | DS_CENTER | WS_MINIMIZEBOX | WS_POPUP | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME
 CAPTION "GUIDgen"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
@@ -97,7 +96,7 @@ BEGIN
     LTEXT           "Manual GUID is parsed and reformatted according to the format options.",IDC_STATIC,7,59,175,16
     LTEXT           "User format specification: %{[#][!]TI}, where:\n# - optional width w/ optional leading zero,\n! - optional flag that forces zero fill (0x00AF);\nT - one of b, B, w, W, d, D,\nI - element index (b/B: 0..15, w/W: 0..7, d/D: 0..3);",IDC_STATIC,7,81,193,44
     LTEXT           "Copyright (c) 2019 duox. Freeware, licensed under LGPL 2.1. For more information, please refer to the application documentation or visit github.com/duox/guidgen project page.",IDC_STATIC,7,18,193,33
-    LTEXT           "GUIDgen version 0.1.alpha/Jan2019.",IDC_STATIC,7,7,120,8
+    LTEXT           "GUIDgen version 0.1.alpha/Jan2019-Mar2022.",IDC_STATIC,7,7,151,8
     PUSHBUTTON      "&Delete config (uninstall)",IDC_DELETE_CONFIG,145,224,55,20,BS_MULTILINE
     LTEXT           "Additional specifier %{s'Name'} forces Name to be displayed with angle brackets or without, depending on the configuration.",IDC_STATIC,7,124,193,23
     EDITTEXT        ID_HELP_DEFAULT_FORMAT,7,204,193,14,ES_AUTOHSCROLL | ES_READONLY
@@ -112,7 +111,7 @@ END
 //
 
 #ifdef APSTUDIO_INVOKED
-GUIDELINES DESIGNINFO 
+GUIDELINES DESIGNINFO
 BEGIN
     IDD_MAIN, DIALOG
     BEGIN
@@ -138,7 +137,7 @@ END
 // Accelerator
 //
 
-IDA_MAIN ACCELERATORS 
+IDA_MAIN ACCELERATORS
 BEGIN
     VK_F1,          IDHELP,                 VIRTKEY, NOINVERT
     "C",            ID_COPY,                VIRTKEY, CONTROL, NOINVERT
