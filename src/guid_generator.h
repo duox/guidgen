@@ -71,6 +71,28 @@ public:
 	}
 };
 
+class IDL_interface_template_guid_generator : public guid_generator
+{
+public:
+	virtual const char *	get_text() const override
+	{
+		return "IDL interface template";
+	}
+	virtual bool	format( std::string & buf, context & ctx ) override
+	{
+		return guid_generator::format(
+			ctx,
+			"[\r\n"
+			"uuid(%{!D0}-%{!W2}-%{!W3}-%{!B8}%{!B9}-%{!B10}%{!B11}%{!B12}%{!B13}%{!B14}%{!B15})\r\n"
+			"version(1.0)\r\n"
+			"]\r\n"
+			"interface INTERFACENAME\r\n"
+			"{\r\n"
+			"\r\n"
+			"}\r\n",
+			buf );
+	}
+};
 class IMPLEMENT_OLECREATE_guid_generator : public guid_generator
 {
 public:

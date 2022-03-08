@@ -23,6 +23,7 @@ static void OnUpdateGuidFormat( HWND hwnd, HWND hwndChild );
  */
 ///{
 user_format_guid_generator				g_user_format_guid_generator;
+IDL_interface_template_guid_generator	g_IDL_interface_template_guid_generator;
 IMPLEMENT_OLECREATE_guid_generator		g_IMPLEMENT_OLECREATE_guid_generator;
 DEFINE_GUID_guid_generator				g_DEFINE_GUID_guid_generator;
 static_const_GUID_guid_generator		g_static_const_GUID_guid_generator;
@@ -35,6 +36,7 @@ Csharp_field_definition_guid_generator	g_Csharp_field_definition_guid_generator;
 VbNet_field_definition_guid_generator	g_VbNet_field_definition_guid_generator;
 guid_generator * g_guid_generators[] =
 {
+	&g_IDL_interface_template_guid_generator,
 	&g_IMPLEMENT_OLECREATE_guid_generator,
 	&g_DEFINE_GUID_guid_generator,
 	&g_static_const_GUID_guid_generator,
@@ -54,48 +56,13 @@ static inline bool is_console( HANDLE h )
 	if( NULL == h )
 		return false;
 
-	// Test by using AttachConsole
-//	FreeConsole();
-//	if( AttachConsole( ATTACH_PARENT_PROCESS ) )
-	{
-		DWORD buf[3];
-		//printf( "GetConsoleProcessList( nullptr, 0 ) => %d (GetLastError() = %d)\n", GetConsoleProcessList( buf, 3 ), GetLastError() );
-		if( 1 < GetConsoleProcessList( buf, 3 ) )
-			return true;
-		FreeConsole();
-	}
+	DWORD buf[3];
+	if( 1 < GetConsoleProcessList( buf, 3 ) )
+		return true;
+
+	FreeConsole();
+
 	return false;
-/*	if( !GetConsoleWindow() )
-	{
-		if( AttachConsole( ATTACH_PARENT_PROCESS ) )
-			return true;
-	}
-
-	if( 1 < GetConsoleProcessList( nullptr, 0 ) )
-		return true;
-
-	if( !GetConsoleTitle(NULL, 0) && GetLastError() == ERROR_SUCCESS )
-		return true;
-
-	// Test by using CreateFile
-	if( FILE_TYPE_UNKNOWN == ::GetFileType( h ) && ERROR_INVALID_HANDLE == GetLastError() )
-	{
-		// workaround cygwin brokenness
-		h = CreateFile( _T("CONOUT$"), GENERIC_WRITE, FILE_SHARE_READ | FILE_SHARE_WRITE, NULL, OPEN_EXISTING, 0, NULL );
-		if( INVALID_HANDLE_VALUE != h )
-		{
-			::CloseHandle( h );
-			return true;
-		}
-	}
-
-	// Test by using GetCurrentConsoleFont
-	CONSOLE_FONT_INFO cfi;
-	if( ::GetCurrentConsoleFont( h, FALSE, &cfi ) != 0 )
-		return true;
-
-	// Exit
-	return false;*/
 }
 
 
@@ -130,21 +97,6 @@ int __cdecl main( void )
 int CALLBACK WinMain( IN HINSTANCE hInstance, IN HINSTANCE hPrevInstance, IN LPSTR lpCmdLine, IN int nShowCmd )
 {
 	g_hInstance = hInstance;
-
-#if 0	// couldn't manage to force CMD.EXE to wait until the process terminates
-		// so use /SUBSYSTEM:CONSOLE and hide console window AS FAST AS POSSIBLE
-//	SetPriorityClass( GetCurrentProcess(), REALTIME_PRIORITY_CLASS );
-//	SetThreadPriority( GetCurrentThread(), THREAD_PRIORITY_TIME_CRITICAL );
-	HANDLE hConOut = GetStdHandle( STD_OUTPUT_HANDLE );
-	if( is_console( hConOut ) )
-	{
-		int argc;
-		LPWSTR * argv = CommandLineToArgvW( GetCommandLineW(), &argc );
-		RunCommandLine( argc, argv );
-		GlobalFree( argv );
-		return 0;
-	}
-#endif
 
 	g_hwndMain = CreateDialog( hInstance, MAKEINTRESOURCE(IDD_MAIN), HWND_DESKTOP, MainDialogProc );
 	if( NULL == g_hwndMain )

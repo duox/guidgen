@@ -14,6 +14,7 @@
 
 extern user_format_guid_generator				g_user_format_guid_generator;
 extern raw_format_guid_generator				g_raw_format_guid_generator;
+extern IDL_interface_template_guid_generator	g_IDL_interface_template_guid_generator;
 extern IMPLEMENT_OLECREATE_guid_generator		g_IMPLEMENT_OLECREATE_guid_generator;
 extern DEFINE_GUID_guid_generator				g_DEFINE_GUID_guid_generator;
 extern static_const_GUID_guid_generator			g_static_const_GUID_guid_generator;
