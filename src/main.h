@@ -28,6 +28,7 @@ extern guid_generator * g_guid_generators[];
 INT_PTR CALLBACK MainDialogProc( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam );
 INT_PTR CALLBACK HelpDialogProc( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam );
 
+extern BOOL g_ConfigDeleted;
 void StoreConfig( HWND hwnd );
 void LoadConfig( HWND hwnd );
 void DeleteConfig( HWND hwnd );

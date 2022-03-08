@@ -81,4 +81,16 @@ using std::nullptr;
 # define countof(a)		( sizeof(a) / sizeof(*(a)) )
 #endif // ndef countof
 
+// std::string::pop_back emulation for old STL libraries
+#if _MSC_VER <= _MSC_VER_71
+inline void pop_back( std::string & s )
+{
+	size_t len = s.length();
+	if( 0 < len )
+		s.resize( len - 1 );
+}
+#else
+# define pop_back( s )		( s.pop_back() )
+#endif
+
 /*END OF pch.h*/

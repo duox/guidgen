@@ -10,6 +10,7 @@
 #include "main.h"
 
 static BOOL ConfigLoaded = FALSE;	///< guards configuration data by ordering load and then store access
+static BOOL	ConfigDeleted = FALSE;	///< TRUE if user invoked Help/Uninstall command
 
 
 /**
@@ -54,6 +55,8 @@ void StoreConfig( HWND hwnd )
 
 	// Check current state
 	if( !ConfigLoaded )
+		return;
+	if( ConfigDeleted )
 		return;
 
 	// Open path to the registry
@@ -170,8 +173,9 @@ void DeleteConfig( HWND hwnd )
 {
 	if( IDYES == MessageBoxA( hwnd, "Delete configuration from the registry?", "Please confirm operation", MB_YESNO|MB_ICONQUESTION ) )
 	{
-		RegDeleteKey( HKEY_CURRENT_USER, _T("Software\\duox\\GUIDgen") );
-		RegDeleteKey( HKEY_CURRENT_USER, _T("Software\\duox") );	// may fail if other products are installed
+		RegDeleteKeyA( HKEY_CURRENT_USER, "Software\\duox\\GUIDgen" );
+		RegDeleteKeyA( HKEY_CURRENT_USER, "Software\\duox" );	// may fail if other products are installed
+		ConfigDeleted = TRUE;
 	}
 }
 

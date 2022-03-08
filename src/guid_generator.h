@@ -51,6 +51,8 @@ public:
 	};
 	virtual bool	format( std::string & buf, context & ctx ) abstract;
 	bool	format( context & ctx, const char * override_format, std::string & buf );
+
+	int		parse_hex( const char * src, size_t src_size, size_t min_digits, size_t max_digits, const char ** src_ptr );
 };
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
