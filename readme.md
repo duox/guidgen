@@ -1,7 +1,6 @@
-GUIDgen - alternative GUID generator GUI.
+GUIDgen - alternative GUID generator, GUI and console versions.
 ==============================================
 
-Author: Akimov Vitaly.
 License: LGPL 2.1.
 
 Screenshots
@@ -18,6 +17,9 @@ Screenshots
 
 * Internal help:<br/>
 ![Help window](https://github.com/duox/guidgen/blob/master/docs/images/screenshot04.png)
+
+* Command line utility help:<br/>
+![Help window](https://github.com/duox/guidgen/blob/master/docs/images/screenshot05.png)
 
 GUID generators
 -----------------
@@ -40,6 +42,16 @@ List of currently supported formatters:
 
   User specifies the format in the "User format string" edit control and "Generate & Copy" button creates a formatted GUID.
 
+
+- Raw format
+
+  Raw format generates sequence of bytes, from the first to the last. at prints them sequentially, without spaces.
+
+Example:
+```sh
+>guidgen.exe -t manual -u {D7129382-1FFC-43A8-99F0-A8F0A1B67559} -f raw
+829312D7FC1FA84399F0A8F0A1B67559
+```
 
 - IMPLEMENT_OLECREATE
 

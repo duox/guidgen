@@ -8,14 +8,16 @@
 
 #include "resource.h"
 
+#define GUIDGEN_VERSION		"2.0"
+
 #include "guid_generator.h"
 
 extern user_format_guid_generator				g_user_format_guid_generator;
+extern raw_format_guid_generator				g_raw_format_guid_generator;
 extern IMPLEMENT_OLECREATE_guid_generator		g_IMPLEMENT_OLECREATE_guid_generator;
 extern DEFINE_GUID_guid_generator				g_DEFINE_GUID_guid_generator;
 extern static_const_GUID_guid_generator			g_static_const_GUID_guid_generator;
 extern registry_format_guid_generator			g_registry_format_guid_generator;
-extern raw_format_guid_generator				g_raw_format_guid_generator;
 extern Guid_attribute_1_guid_generator			g_Guid_attribute_1_guid_generator;
 extern Guid_attribute_2_guid_generator			g_Guid_attribute_2_guid_generator;
 extern Guid_attribute_3_guid_generator			g_Guid_attribute_3_guid_generator;
@@ -29,5 +31,7 @@ INT_PTR CALLBACK HelpDialogProc( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPa
 void StoreConfig( HWND hwnd );
 void LoadConfig( HWND hwnd );
 void DeleteConfig( HWND hwnd );
+
+int run_command_line( int argc, const LPCWSTR * argv );
 
 /*END OF main.h*/

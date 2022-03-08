@@ -199,6 +199,9 @@
 			Filter="cpp;c;cxx;def;odl;idl;hpj;bat;asm;asmx"
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}">
 			<File
+				RelativePath="..\..\src\cmdline.cpp">
+			</File>
+			<File
 				RelativePath="..\..\src\config.cpp">
 			</File>
 			<File
@@ -258,6 +261,23 @@
 				RelativePath="..\..\src\resource.h">
 			</File>
 		</Filter>
+		<Filter
+			Name="docs"
+			Filter="">
+			<File
+				RelativePath="..\..\docs\todo.md">
+			</File>
+		</Filter>
+		<Filter
+			Name="wiki"
+			Filter="">
+			<File
+				RelativePath="..\..\wiki\Home.md">
+			</File>
+		</Filter>
+		<File
+			RelativePath="..\..\readme.md">
+		</File>
 	</Files>
 	<Globals>
 	</Globals>

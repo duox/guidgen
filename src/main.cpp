@@ -49,7 +49,6 @@ guid_generator * g_guid_generators[] =
 };
 ///}
 
-static int RunCommandLine( int argc, LPWSTR * argv );
 static inline bool is_console( HANDLE h )
 {
 	if( NULL == h )
@@ -114,14 +113,14 @@ int __cdecl main( void )
 {
 	int res;
 	HANDLE hConOut = GetStdHandle( STD_OUTPUT_HANDLE );
-	if( is_console( hConOut ) )
+	if( is_console( hConOut ) )	// console app
 	{
 		int argc;
 		LPWSTR * argv = CommandLineToArgvW( GetCommandLineW(), &argc );
-		res = RunCommandLine( argc, argv );
+		res = run_command_line( argc, argv );
 		GlobalFree( argv );
 	}
-	else
+	else	// GUI app, switch to GUI entry point
 	{
 		ShowWindow( GetConsoleWindow(), SW_HIDE );
 		res = WinMain( (HINSTANCE) GetModuleHandle( NULL ), NULL, "", SW_SHOWNORMAL );
@@ -521,40 +520,6 @@ INT_PTR CALLBACK MainDialogProc( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPa
 		return FALSE;
 	}
 	return TRUE;
-}
-
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-int RunCommandLine( int argc, LPWSTR * argv )
-{
-	guid_generator * generator = &g_registry_format_guid_generator;
-	guid_generator::context ctx;
-	DWORD nb;
-
-	// Prepare
-	ctx.m_type = guid_generator::guid_type_random;
-	ctx.m_flags = 0;
-
-	// Process arguments
-	if( argc >= 2 )
-	{
-		for( int i = 1; i < argc; ++ i )
-		{
-		}
-	}
-
-	// Generate GUID and display it
-	generator->generate( ctx.m_type, ctx.m_guid, ctx.m_user_input.c_str() );
-
-	std::string buf;
-	generator->format( buf, ctx );
-
-	SetConsoleMode( GetStdHandle( STD_OUTPUT_HANDLE ), ENABLE_PROCESSED_OUTPUT | ENABLE_WRAP_AT_EOL_OUTPUT );
-	WriteFile( GetStdHandle( STD_OUTPUT_HANDLE ), buf.c_str(), DWORD(buf.size()), &nb, NULL );
-	WriteFile( GetStdHandle( STD_OUTPUT_HANDLE ), "\n", 1, &nb, NULL );
-
-	// Exit
-	return 0;
 }
 
 /*END OF main.cpp*/

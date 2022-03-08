@@ -41,9 +41,16 @@ public:
 		std::string	m_user_input;
 		std::string	m_format;
 		unsigned	m_flags;
+		unsigned	m_index;
+		unsigned	m_count;
+
+		context():
+			m_type( guid_type_null), m_flags( 0 ), m_index( 0 ), m_count( 1 )
+		{
+		}
 	};
 	virtual bool	format( std::string & buf, context & ctx ) abstract;
-	bool	format( const GUID & guid, const char * format, unsigned flags, std::string & buf );
+	bool	format( context & ctx, const char * override_format, std::string & buf );
 };
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -58,7 +65,7 @@ public:
 	}
 	virtual bool	format( std::string & buf, context & ctx ) override
 	{
-		return guid_generator::format( ctx.m_guid, ctx.m_format.c_str(), ctx.m_flags, buf );
+		return guid_generator::format( ctx, ctx.m_format.c_str(), buf );
 	}
 };
 
@@ -72,10 +79,9 @@ public:
 	virtual bool	format( std::string & buf, context & ctx ) override
 	{
 		return guid_generator::format(
-			ctx.m_guid,
+			ctx,
 			"// {%{!D0}-%{!W2}-%{!W3}-%{!B8}%{!B9}-%{!B10}%{!B11}%{!B12}%{!B13}%{!B14}%{!B15}}\r\n"
 			"IMPLEMENT_OLECREATE( %{s'Class'}, %{s'Name'}, 0x%{d0}, 0x%{w2}, 0x%{w3}, 0x%{b8}, 0x%{b9}, 0x%{b10}, 0x%{b11}, 0x%{b12}, 0x%{b13}, 0x%{b14}, 0x%{b15} );",
-			ctx.m_flags,
 			buf );
 	}
 };
@@ -89,10 +95,9 @@ public:
 	virtual bool	format( std::string & buf, context & ctx ) override
 	{
 		return guid_generator::format(
-			ctx.m_guid,
+			ctx,
 			"// {%{!D0}-%{!W2}-%{!W3}-%{!B8}%{!B9}-%{!B10}%{!B11}%{!B12}%{!B13}%{!B14}%{!B15}}\r\n"
 			"DEFINE_GUID( %{s'Name'}, 0x%{d0}, 0x%{w2}, 0x%{w3}, 0x%{b8}, 0x%{b9}, 0x%{b10}, 0x%{b11}, 0x%{b12}, 0x%{b13}, 0x%{b14}, 0x%{b15} );",
-			ctx.m_flags,
 			buf );
 	}
 };
@@ -106,10 +111,9 @@ public:
 	virtual bool	format( std::string & buf, context & ctx ) override
 	{
 		return guid_generator::format(
-			ctx.m_guid,
+			ctx,
 			"// {%{!D0}-%{!W2}-%{!W3}-%{!B8}%{!B9}-%{!B10}%{!B11}%{!B12}%{!B13}%{!B14}%{!B15}}\r\n"
 			"static const struct GUID %{s'Name'} = { 0x%{d0}, 0x%{w2}, 0x%{w3}, { 0x%{b8}, 0x%{b9}, 0x%{b10}, 0x%{b11}, 0x%{b12}, 0x%{b13}, 0x%{b14}, 0x%{b15} } };",
-			ctx.m_flags,
 			buf );
 	}
 };
@@ -123,9 +127,8 @@ public:
 	virtual bool	format( std::string & buf, context & ctx ) override
 	{
 		return guid_generator::format(
-			ctx.m_guid,
+			ctx,
 			SZ_GUID_FORMAT_REGISTRY,
-			ctx.m_flags,
 			buf );
 	}
 };
@@ -139,9 +142,9 @@ public:
 	virtual bool	format( std::string & buf, context & ctx ) override
 	{
 		return guid_generator::format(
-			ctx.m_guid,
-			"%{!D0}%{!W2}%{!W3}%{!B8}%{!B9}%{!B10}%{!B11}%{!B12}%{!B13}%{!B14}%{!B15}",
-			ctx.m_flags,
+			ctx,
+			"%{0B0}%{0B1}%{0B2}%{0B3}%{0B4}%{0B5}%{0B6}%{0B7}"
+			"%{0B8}%{0B9}%{0B10}%{0B11}%{0B12}%{0B13}%{0B14}%{0B15}",
 			buf );
 	}
 };
@@ -155,9 +158,8 @@ public:
 	virtual bool	format( std::string & buf, context & ctx ) override
 	{
 		return guid_generator::format(
-			ctx.m_guid,
+			ctx,
 			"[Guid(\"%{D0}-%{W2}-%{W3}-%{B8}%{B9}-%{B10}%{B11}%{B12}%{B13}%{B14}%{B15}\")]",
-			ctx.m_flags,
 			buf );
 	}
 };
@@ -171,9 +173,8 @@ public:
 	virtual bool	format( std::string & buf, context & ctx ) override
 	{
 		return guid_generator::format(
-			ctx.m_guid,
+			ctx,
 			"<Guid(\"%{D0}-%{W2}-%{W3}-%{B8}%{B9}-%{B10}%{B11}%{B12}%{B13}%{B14}%{B15}\")>",
-			ctx.m_flags,
 			buf );
 	}
 };
@@ -187,10 +188,9 @@ public:
 	virtual bool	format( std::string & buf, context & ctx ) override
 	{
 		return guid_generator::format(
-			ctx.m_guid,
+			ctx,
 			"// {%{!D0}-%{!W2}-%{!W3}-%{!B8}%{!B9}-%{!B10}%{!B11}%{!B12}%{!B13}%{!B14}%{!B15}}\r\n"
 			"guid(%{D0}-%{W2}-%{W3}-%{B8}%{B9}-%{B10}%{B11}%{B12}%{B13}%{B14}%{B15})",
-			ctx.m_flags,
 			buf );
 	}
 };
@@ -204,10 +204,9 @@ public:
 	virtual bool	format( std::string & buf, context & ctx ) override
 	{
 		return guid_generator::format(
-			ctx.m_guid,
+			ctx,
 			"// {%{!D0}-%{!W2}-%{!W3}-%{!B8}%{!B9}-%{!B10}%{!B11}%{!B12}%{!B13}%{!B14}%{!B15}}\r\n"
 			"static readonly Guid %{s'Name'} = new Guid(0x%{d0}, 0x%{w2}, 0x%{w3}, 0x%{b8}, 0x%{b9}, 0x%{b10}, 0x%{b11}, 0x%{b12}, 0x%{b13}, 0x%{b14}, 0x%{b15});",
-			ctx.m_flags,
 			buf );
 	}
 };
@@ -221,10 +220,9 @@ public:
 	virtual bool	format( std::string & buf, context & ctx ) override
 	{
 		return guid_generator::format(
-			ctx.m_guid,
+			ctx,
 			"' {%{!D0}-%{!W2}-%{!W3}-%{!B8}%{!B9}-%{!B10}%{!B11}%{!B12}%{!B13}%{!B14}%{!B15}}\r\n"
 			"Shared ReadOnly %{s'Name'} As Guid = New Guid(&H%{d0}, &H%{w2}, &H%{w3}, &H%{b8}, &H%{b9}, &H%{b10}, &H%{b11}, &H%{b12}, &H%{b13}, &H%{b14}, &H%{b15})",
-			ctx.m_flags,
 			buf );
 	}
 };
