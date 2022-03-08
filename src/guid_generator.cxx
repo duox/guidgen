@@ -126,7 +126,7 @@ bool guid_generator::generate( guid_type_t type, GUID & guid, const char * user_
  */
 bool guid_generator::format( context & ctx, const char * override_format, std::string & buf )
 {
-	GUID guid = rguid;
+	GUID guid = ctx.m_guid;
 	bool ignore_next_nl = false;
 
 	// Check current state
