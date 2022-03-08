@@ -142,7 +142,7 @@ bool guid_generator::format( context & ctx, const char * override_format, std::s
 		case 'i':
 		case 'I':
 			char temp[64];
-			ultoa( ctx.m_index, temp, 10 );
+			_ultoa( ctx.m_index, temp, 10 );
 			buf.append( temp );
 			if( '}' != *++src )
 				return false;

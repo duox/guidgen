@@ -123,7 +123,7 @@ int __cdecl main( void )
 	else	// GUI app, switch to GUI entry point
 	{
 		ShowWindow( GetConsoleWindow(), SW_HIDE );
-		res = WinMain( (HINSTANCE) GetModuleHandle( NULL ), NULL, "", SW_SHOWNORMAL );
+		res = WinMain( (HINSTANCE) GetModuleHandle( NULL ), NULL, (LPSTR)"", SW_SHOWNORMAL );
 	}
 	return res;
 }
@@ -208,10 +208,10 @@ static inline void GenerateGuid( HWND hwnd, BOOL UseExisting )
 
 	ctx.m_guid = g_Guid;
 
-	GetDlgItemText( hwnd, IDC_USER_FORMAT_STRING, buffer, countof(buffer) );
+	GetDlgItemTextA( hwnd, IDC_USER_FORMAT_STRING, buffer, countof(buffer) );
 	ctx.m_format = buffer;
 
-	GetDlgItemText( hwnd, IDC_MANUAL_GUID, buffer, countof(buffer) );
+	GetDlgItemTextA( hwnd, IDC_MANUAL_GUID, buffer, countof(buffer) );
 	ctx.m_user_input = buffer;
 
 	hwndChild = GetDlgItem( hwnd, IDC_GUID_TYPE );

@@ -103,7 +103,7 @@ int swt_format( guid_generator::context & ctx, int & i, int argc, const LPCWSTR 
 	size_t j;
 	for( j = 0; j < countof(idents); ++ j )
 	{
-		if( !wcsicmp( argv[i], idents[j].name ) )
+		if( !_wcsicmp( argv[i], idents[j].name ) )
 		{
 			generator = idents[j].generator;
 			break;
@@ -114,7 +114,7 @@ int swt_format( guid_generator::context & ctx, int & i, int argc, const LPCWSTR 
 
 	if( j >= countof(idents) )
 	{
-		printf( "*** fatal error: unrecognized format type: %s\n", argv[i] );
+		printf( "*** fatal error: unrecognized format type: %S\n", argv[i] );
 		return 1;
 	}
 
@@ -174,13 +174,13 @@ int swt_type( guid_generator::context & ctx, int & i, int argc, const LPCWSTR * 
 		return 1;
 	}
 
-	if( !wcsicmp( argv[i], L"manual" ) )
+	if( !_wcsicmp( argv[i], L"manual" ) )
 		ctx.m_type = guid_generator::guid_type_manual;
-	else if( !wcsicmp( argv[i], L"null" ) )
+	else if( !_wcsicmp( argv[i], L"null" ) )
 		ctx.m_type = guid_generator::guid_type_null;
-	else if( !wcsicmp( argv[i], L"ones" ) )
+	else if( !_wcsicmp( argv[i], L"ones" ) )
 		ctx.m_type = guid_generator::guid_type_ones;
-	else if( !wcsicmp( argv[i], L"random" ) )
+	else if( !_wcsicmp( argv[i], L"random" ) )
 		ctx.m_type = guid_generator::guid_type_random;
 	else
 	{
@@ -265,7 +265,7 @@ int run_command_line( int argc, const LPCWSTR * argv )
 		size_t j;
 		for( j = 0; j < countof(switch_desc); ++ j )
 		{
-			if( !wcsicmp( switch_desc[j].name, argv[i] ) )
+			if( !_wcsicmp( switch_desc[j].name, argv[i] ) )
 			{
 				++ i;
 				const int res = switch_desc[j].callback( ctx, i, argc, argv );

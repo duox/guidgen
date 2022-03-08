@@ -10,6 +10,7 @@ tools/
 *.cache
 *.config
 *.db
+*.db-*
 *.dgml
 *.dll
 *.enc

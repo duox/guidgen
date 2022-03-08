@@ -57,10 +57,10 @@ void StoreConfig( HWND hwnd )
 		return;
 
 	// Open path to the registry
-	lResult = RegOpenKeyA( HKEY_CURRENT_USER, "Software\\duox\\GUIDgen", &hKey );
+	lResult = RegOpenKey( HKEY_CURRENT_USER, _T("Software\\duox\\GUIDgen"), &hKey );
 	if( ERROR_SUCCESS != lResult )
 	{
-		lResult = RegCreateKey( HKEY_CURRENT_USER, "Software\\duox\\GUIDgen", &hKey );
+		lResult = RegCreateKey( HKEY_CURRENT_USER, _T("Software\\duox\\GUIDgen"), &hKey );
 		if( ERROR_SUCCESS != lResult )
 			return;
 	}
@@ -71,9 +71,9 @@ void StoreConfig( HWND hwnd )
 	dwValue = ComboBox_GetCurSel( GetDlgItem( hwnd, IDC_FORMAT_LIST ) );
 	RegSetValueExA( hKey, "Format", 0, REG_DWORD, (BYTE *) &dwValue, sizeof(dwValue) );
 
-	GetDlgItemText( hwnd, IDC_MANUAL_GUID, buffer, countof(buffer) );
+	GetDlgItemTextA( hwnd, IDC_MANUAL_GUID, buffer, countof(buffer) );
 	RegSetValueExA( hKey, "ManualGuid", 0, REG_SZ, (BYTE *) buffer, DWORD( sizeof(*buffer)*strlen(buffer) ) );
-	GetDlgItemText( hwnd, IDC_USER_FORMAT_STRING, buffer, countof(buffer) );
+	GetDlgItemTextA( hwnd, IDC_USER_FORMAT_STRING, buffer, countof(buffer) );
 	RegSetValueExA( hKey, "FormatString", 0, REG_SZ, (BYTE *) buffer, DWORD( sizeof(*buffer)*strlen(buffer) ) );
 
 	dwValue = BST_UNCHECKED != IsDlgButtonChecked( hwnd, IDC_REMOVE_LEADING_SPACES );
@@ -141,8 +141,8 @@ void LoadConfig( HWND hwnd )
 
 		ComboBox_SetCurSel( GetDlgItem( hwnd, IDC_GUID_TYPE ), dwGenType );
 		ComboBox_SetCurSel( GetDlgItem( hwnd, IDC_FORMAT_LIST ), dwFormat );
-		SetDlgItemText( hwnd, IDC_MANUAL_GUID, ManualGuid );
-		SetDlgItemText( hwnd, IDC_USER_FORMAT_STRING, FormatString );
+		SetDlgItemTextA( hwnd, IDC_MANUAL_GUID, ManualGuid );
+		SetDlgItemTextA( hwnd, IDC_USER_FORMAT_STRING, FormatString );
 		CheckDlgButton( hwnd, IDC_REMOVE_LEADING_SPACES, dwRemoveSpaces ? BST_CHECKED : BST_UNCHECKED );
 		CheckDlgButton( hwnd, IDC_USE_ANGLE_BRACKETS, dwAngleBrackets ? BST_CHECKED : BST_UNCHECKED );
 
@@ -170,8 +170,8 @@ void DeleteConfig( HWND hwnd )
 {
 	if( IDYES == MessageBoxA( hwnd, "Delete configuration from the registry?", "Please confirm operation", MB_YESNO|MB_ICONQUESTION ) )
 	{
-		RegDeleteKey( HKEY_CURRENT_USER, "Software\\duox\\GUIDgen" );
-		RegDeleteKey( HKEY_CURRENT_USER, "Software\\duox" );	// may fail if other products are installed
+		RegDeleteKey( HKEY_CURRENT_USER, _T("Software\\duox\\GUIDgen") );
+		RegDeleteKey( HKEY_CURRENT_USER, _T("Software\\duox") );	// may fail if other products are installed
 	}
 }
 

@@ -24,7 +24,7 @@ INT_PTR CALLBACK HelpDialogProc( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPa
 	switch( uMsg )
 	{
 	case WM_INITDIALOG:
-		SetDlgItemText( hwnd, ID_HELP_DEFAULT_FORMAT, SZ_GUID_FORMAT_REGISTRY );
+		SetDlgItemTextA( hwnd, ID_HELP_DEFAULT_FORMAT, SZ_GUID_FORMAT_REGISTRY );
 		break;
 	case WM_CLOSE:
 		EndDialog( hwnd, 0 );

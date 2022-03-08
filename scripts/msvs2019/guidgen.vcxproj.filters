@@ -3,46 +3,15 @@
   <ItemGroup>
     <Filter Include="sources">
       <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
     <Filter Include="resources">
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="..\..\src\config.cpp">
-      <Filter>sources</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\guid_generator.cxx">
-      <Filter>sources</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\help.cpp">
-      <Filter>sources</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\main.cpp">
-      <Filter>sources</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\pch.cpp">
-      <Filter>sources</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\cmdline.cpp">
-      <Filter>sources</Filter>
-    </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="..\..\src\resource.h">
-      <Filter>resources</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\pch.h">
-      <Filter>sources</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\main.h">
-      <Filter>sources</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\guid_generator.h">
-      <Filter>sources</Filter>
-    </ClInclude>
+    <Filter Include="docs">
+      <UniqueIdentifier>{cb8d2704-e103-4549-8f17-d1b0c0b25dd8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="..\..\src\guidgen.rc">
@@ -58,7 +27,44 @@
     </Image>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\src\resource.h">
+      <Filter>resources</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\guid_generator.h">
+      <Filter>sources</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\main.h">
+      <Filter>sources</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\pch.h">
+      <Filter>sources</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\src\cmdline.cpp">
+      <Filter>sources</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\config.cpp">
+      <Filter>sources</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\guid_generator.cxx">
+      <Filter>sources</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\help.cpp">
+      <Filter>sources</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\main.cpp">
+      <Filter>sources</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\pch.cpp">
+      <Filter>sources</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
     <None Include="..\..\.gitignore" />
     <None Include="..\..\readme.md" />
+    <None Include="..\..\docs\todo.md">
+      <Filter>docs</Filter>
+    </None>
   </ItemGroup>
 </Project>
