@@ -13,11 +13,13 @@
 #undef APSTUDIO_READONLY_SYMBOLS
 
 /////////////////////////////////////////////////////////////////////////////
-// Russian (Russia) resources
+// Russian resources
 
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_RUS)
+#ifdef _WIN32
 LANGUAGE LANG_RUSSIAN, SUBLANG_DEFAULT
 #pragma code_page(1251)
+#endif //_WIN32
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -63,45 +65,63 @@ END
 //
 
 IDD_MAIN DIALOGEX 0, 0, 214, 209
-STYLE DS_SETFONT | DS_FIXEDSYS | DS_CENTER | WS_MINIMIZEBOX | WS_POPUP | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME
+STYLE DS_SETFONT | DS_FIXEDSYS | DS_CENTER | WS_MINIMIZEBOX | WS_POPUP | 
+    WS_CAPTION | WS_SYSMENU | WS_THICKFRAME
 CAPTION "GUIDgen"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
-    COMBOBOX        IDC_GUID_TYPE,51,7,155,100,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
+    COMBOBOX        IDC_GUID_TYPE,51,7,155,100,CBS_DROPDOWNLIST | WS_VSCROLL | 
+                    WS_TABSTOP
     EDITTEXT        IDC_MANUAL_GUID,51,22,155,14,ES_AUTOHSCROLL
     CONTROL         "Remove leading zero digits",IDC_REMOVE_LEADING_SPACES,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,51,38,101,10
-    CONTROL         "Use << and >> around template names",IDC_USE_ANGLE_BRACKETS,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,51,49,145,10
-    COMBOBOX        IDC_FORMAT_LIST,51,60,155,96,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
-    EDITTEXT        IDC_USER_FORMAT_STRING,7,86,199,23,ES_MULTILINE | ES_AUTOVSCROLL | ES_AUTOHSCROLL | ES_WANTRETURN | WS_VSCROLL
-    EDITTEXT        IDC_RESULT,7,122,199,40,ES_MULTILINE | ES_AUTOVSCROLL | ES_READONLY
+    CONTROL         "Use << and >> around template names",
+                    IDC_USE_ANGLE_BRACKETS,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,51,49,145,10
+    COMBOBOX        IDC_FORMAT_LIST,51,60,155,96,CBS_DROPDOWNLIST | 
+                    WS_VSCROLL | WS_TABSTOP
+    EDITTEXT        IDC_USER_FORMAT_STRING,7,86,199,23,ES_MULTILINE | 
+                    ES_AUTOVSCROLL | ES_AUTOHSCROLL | ES_WANTRETURN | 
+                    WS_VSCROLL
+    EDITTEXT        IDC_RESULT,7,122,199,40,ES_MULTILINE | ES_AUTOVSCROLL | 
+                    ES_READONLY
     DEFPUSHBUTTON   "&Generate && Copy",ID_GENERATE,7,188,65,14
     PUSHBUTTON      "&Copy (Ctrl+C)",ID_COPY,74,188,65,14
     PUSHBUTTON      "&Help (F1)",IDHELP,141,188,65,14
     LTEXT           "GUID &type",IDC_STATIC,16,9,36,11
     LTEXT           "Manual GUID",IDC_STATIC,7,24,43,11
     LTEXT           "GUID &format",IDC_STATIC,7,63,43,11
-    LTEXT           "User format string (see Help for format description):",IDC_STATIC,7,75,190,11
+    LTEXT           "User format string (see Help for format description):",
+                    IDC_STATIC,7,75,190,11
     LTEXT           "&Result",IDC_RESULT_TEXT,7,111,199,11
     EDITTEXT        IDC_GUID,7,162,199,14,ES_AUTOHSCROLL | ES_READONLY
 END
 
 IDD_HELP DIALOGEX 0, 0, 207, 251
-STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | DS_CENTER | WS_POPUP | WS_CAPTION | WS_SYSMENU
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | DS_CENTER | WS_POPUP | 
+    WS_CAPTION | WS_SYSMENU
 CAPTION "GUIDgen help"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
     DEFPUSHBUTTON   "Close",IDOK,7,230,65,14
-    LTEXT           "Manual GUID is parsed and reformatted according to the format options.",IDC_STATIC,7,59,175,16
-    LTEXT           "User format specification: %{[#][!]TI}, where:\n# - optional width w/ optional leading zero,\n! - optional flag that forces zero fill (0x00AF);\nT - one of b, B, w, W, d, D,\nI - element index (b/B: 0..15, w/W: 0..7, d/D: 0..3);",IDC_STATIC,7,81,193,44
-    LTEXT           "Copyright (c) 2019 duox. Freeware, licensed under LGPL 2.1. For more information, please refer to the application documentation or visit github.com/duox/guidgen project page.",IDC_STATIC,7,18,193,33
-    LTEXT           "GUIDgen version 0.1.alpha/Jan2019-Mar2022.",IDC_STATIC,7,7,151,8
-    PUSHBUTTON      "&Delete config (uninstall)",IDC_DELETE_CONFIG,145,224,55,20,BS_MULTILINE
-    LTEXT           "Additional specifier %{s'Name'} forces Name to be displayed with angle brackets or without, depending on the configuration.",IDC_STATIC,7,124,193,23
-    EDITTEXT        ID_HELP_DEFAULT_FORMAT,7,204,193,14,ES_AUTOHSCROLL | ES_READONLY
-    LTEXT           "Default GUID format string (registry style { ... }):",IDC_STATIC,7,195,159,8
-    LTEXT           "GUID generation commands:\n%{gen:r}\t- generate new random GUID;\n%{gen:0}\t- generate new null GUID;\n%{gen:1}\t- generate new all-ones GUID;\n%{gen:{#..#}}\t- parse given GUID.",IDC_STATIC,7,151,193,42
+    LTEXT           "Manual GUID is parsed and reformatted according to the format options.",
+                    IDC_STATIC,7,59,175,16
+    LTEXT           "User format specification: %{[#][!]TI}, where:\n# - optional width w/ optional leading zero,\n! - optional flag that forces zero fill (0x00AF);\nT - one of b, B, w, W, d, D,\nI - element index (b/B: 0..15, w/W: 0..7, d/D: 0..3);",
+                    IDC_STATIC,7,81,193,44
+    LTEXT           "Copyright (c) 2019 duox. Freeware, licensed under LGPL 2.1. For more information, please refer to the application documentation or visit github.com/duox/guidgen project page.",
+                    IDC_STATIC,7,18,193,33
+    LTEXT           "GUIDgen version 0.1.alpha/Jan2019-Mar2022.",IDC_STATIC,
+                    7,7,151,8
+    PUSHBUTTON      "&Delete config (uninstall)",IDC_DELETE_CONFIG,145,224,
+                    55,20,BS_MULTILINE
+    LTEXT           "Additional specifier %{s'Name'} forces Name to be displayed with angle brackets or without, depending on the configuration.",
+                    IDC_STATIC,7,124,193,23
+    EDITTEXT        ID_HELP_DEFAULT_FORMAT,7,204,193,14,ES_AUTOHSCROLL | 
+                    ES_READONLY
+    LTEXT           "Default GUID format string (registry style { ... }):",
+                    IDC_STATIC,7,195,159,8
+    LTEXT           "GUID generation commands:\n%{gen:r}\t- generate new random GUID;\n%{gen:0}\t- generate new null GUID;\n%{gen:1}\t- generate new all-ones GUID;\n%{gen:{#..#}}\t- parse given GUID.",
+                    IDC_STATIC,7,151,193,42
 END
 
 
@@ -111,7 +131,7 @@ END
 //
 
 #ifdef APSTUDIO_INVOKED
-GUIDELINES DESIGNINFO
+GUIDELINES DESIGNINFO 
 BEGIN
     IDD_MAIN, DIALOG
     BEGIN
@@ -137,7 +157,7 @@ END
 // Accelerator
 //
 
-IDA_MAIN ACCELERATORS
+IDA_MAIN ACCELERATORS 
 BEGIN
     VK_F1,          IDHELP,                 VIRTKEY, NOINVERT
     "C",            ID_COPY,                VIRTKEY, CONTROL, NOINVERT
@@ -152,30 +172,30 @@ END
 // Icon with lowest ID value placed first to ensure application icon
 // remains consistent on all systems.
 IDI_MAIN_BIG            ICON                    "main_big.ico"
-
 IDI_MAIN_SMALL          ICON                    "main_small.ico"
-
 
 /////////////////////////////////////////////////////////////////////////////
 //
 // AFX_DIALOG_LAYOUT
 //
 
-IDD_HELP AFX_DIALOG_LAYOUT
+IDD_HELP AFX_DIALOG_LAYOUT 
 BEGIN
-    0
+    0x0000
 END
 
-#endif    // Russian (Russia) resources
+#endif    // Russian resources
 /////////////////////////////////////////////////////////////////////////////
 
 
 /////////////////////////////////////////////////////////////////////////////
-// English (United States) resources
+// English (U.S.) resources
 
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
 LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
 #pragma code_page(1252)
+#endif //_WIN32
 
 #ifdef APSTUDIO_INVOKED
 /////////////////////////////////////////////////////////////////////////////
@@ -202,7 +222,7 @@ END
 
 #endif    // APSTUDIO_INVOKED
 
-#endif    // English (United States) resources
+#endif    // English (U.S.) resources
 /////////////////////////////////////////////////////////////////////////////
 
 
