@@ -7,19 +7,19 @@ Screenshots
 -----------------
 
 * Default window state:<br/>
-![Default window](https://github.com/duox/guidgen/blob/master/docs/images/screenshot01.png?raw=true)
+![Default window](./docs/images/screenshot01.png?raw=true)
 
 * List of available GUID generators:<br/>
-![GUID generators](https://github.com/duox/guidgen/blob/master/docs/images/screenshot02.png?raw=true)
+![GUID generators](./docs/images/screenshot02.png?raw=true)
 
 * List of available GUID formats:<br/>
-![GUID formats](https://github.com/duox/guidgen/blob/master/docs/images/screenshot03.png?raw=true)
+![GUID formats](./docs/images/screenshot03.png?raw=true)
 
 * Internal help:<br/>
-![Help window](https://github.com/duox/guidgen/blob/master/docs/images/screenshot04.png?raw=true)
+![Help window](./docs/images/screenshot04.png?raw=true)
 
 * Command line utility help:<br/>
-![Help window](https://github.com/duox/guidgen/blob/master/docs/images/screenshot05.png?raw=true)
+![Help window](./docs/images/screenshot05.png?raw=true)
 
 GUID generators
 -----------------
@@ -99,7 +99,8 @@ static const struct GUID Name = { 0xba4e6bb2, 0x8a8b, 0x4e81, { 0xb8, 0x85, 0xa6
 - ***standard registry format***
 
     Example:
-{BA4E6BB2-8A8B-4E81-B885-A6E1A9738574}
+
+{```BA4E6BB2-8A8B-4E81-B885-A6E1A9738574```}
 
 
 - ***`[`Guid(" ... ")`]`***
