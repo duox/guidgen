@@ -58,9 +58,9 @@ List of currently supported formatters:
 	IDL interface empty template with uuid() attribute. 
 
 	Example:
-```csharp
+```midl
 [
-uuid(1B0B0F35-18CC-40F1-9875-74B0E5990923)
+uuid("1B0B0F35-18CC-40F1-9875-74B0E5990923")
 version(1.0)
 ]
 interface INTERFACENAME
