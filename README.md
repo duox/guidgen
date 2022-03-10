@@ -1,5 +1,5 @@
 GUIDgen - alternative GUID generator, GUI and console versions.
-==============================================
+===============================================================
 
 License: LGPL 2.1.
 
@@ -7,19 +7,19 @@ Screenshots
 -----------------
 
 * Default window state:<br/>
-![Default window](./docs/images/screenshot01.png?raw=true)
+![Default window](https://github.com/duox/guidgen/blob/master/docs/images/screenshot01.png?raw=true)
 
 * List of available GUID generators:<br/>
-![GUID generators](./docs/images/screenshot02.png?raw=true)
+![GUID generators](https://github.com/duox/guidgen/blob/master/docs/images/screenshot02.png?raw=true)
 
 * List of available GUID formats:<br/>
-![GUID formats](./docs/images/screenshot03.png?raw=true)
+![GUID formats](https://github.com/duox/guidgen/blob/master/docs/images/screenshot03.png?raw=true)
 
 * Internal help:<br/>
-![Help window](./docs/images/screenshot04.png?raw=true)
+![Help window](https://github.com/duox/guidgen/blob/master/docs/images/screenshot04.png?raw=true)
 
 * Command line utility help:<br/>
-![Help window](./docs/images/screenshot05.png?raw=true)
+![Help window](https://github.com/duox/guidgen/blob/master/docs/images/screenshot05.png?raw=true)
 
 GUID generators
 -----------------
